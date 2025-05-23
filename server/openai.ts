@@ -133,7 +133,7 @@ Lo script deve:
   }
 }
 
-export async function suggestContentTypes(objective: string, nicheProfile: any): Promise<any> {
+export async function suggestContentTypes(objective: string, nicheProfile: any, isPremium: boolean = false): Promise<any> {
   const systemPrompt = `Sei un esperto strategist di content marketing. Analizza l'obiettivo fornito dall'utente e suggerisci i 2-3 tipi di contenuto più efficaci per raggiungerlo.
 
 Profilo del progetto:
@@ -145,11 +145,19 @@ ${nicheProfile.keywords ? `- Keywords: ${nicheProfile.keywords}` : ""}
 
 Tipi disponibili: facebook, instagram, product, blog, video
 
+${isPremium ? `
+UTENTE PREMIUM - Includi anche suggerimenti per:
+- Immagini da utilizzare (descrizioni specifiche per foto/grafiche)
+- Video da creare (concept e storyboard dettagliati)
+- Elementi visivi e design suggestions
+` : ''}
+
 Per ogni suggerimento, fornisci:
 1. Il tipo (uno dei tipi disponibili)
 2. Il titolo descrittivo
 3. Una breve descrizione di cosa includerebbe
 4. La ragione specifica per cui questo formato è ideale per l'obiettivo
+${isPremium ? '5. **PREMIUM**: Suggerimenti specifici per immagini e video da abbinare' : ''}
 
 Rispondi in formato JSON con questa struttura:
 {
@@ -158,7 +166,12 @@ Rispondi in formato JSON con questa struttura:
       "type": "instagram",
       "title": "Post Instagram",
       "description": "Caption coinvolgente con call-to-action",
-      "reason": "Perfetto per generare engagement e raggiungere un pubblico giovane"
+      "reason": "Perfetto per generare engagement e raggiungere un pubblico giovane"${isPremium ? `,
+      "premiumVisuals": {
+        "imageIdeas": ["Foto del prodotto in uso", "Behind-the-scenes"],
+        "videoIdeas": ["Tutorial breve 30s", "Testimonianza cliente"],
+        "designTips": ["Colori vivaci", "Font moderno e leggibile"]
+      }` : ''}
     }
   ]
 }`;

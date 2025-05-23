@@ -296,7 +296,7 @@ export default function ContentOutput() {
                   className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-medium px-6"
                 >
                   <Crown className="w-4 h-4 mr-2" />
-                  {createSubscriptionMutation.isPending ? "Attivazione..." : "Passa a Premium €19.99/mese"}
+                  {createSubscriptionMutation.isPending ? "Attivazione..." : "Passa a Premium €4.99/mese"}
                 </Button>
               </div>
             </CardContent>

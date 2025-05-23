@@ -151,14 +151,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = req.user.claims.sub;
       const { nicheProfileId, objective } = req.body;
       
+      // Get user info to check if Premium
+      const user = await storage.getUser(userId);
+      if (!user) {
+        return res.status(404).json({ message: "Utente non trovato" });
+      }
+      
       // Get niche profile
       const nicheProfile = await storage.getNicheProfile(nicheProfileId);
       if (!nicheProfile || nicheProfile.userId !== userId) {
         return res.status(404).json({ message: "Progetto non trovato" });
       }
       
-      // Get AI suggestions
-      const suggestions = await suggestContentTypes(objective, nicheProfile);
+      // Get AI suggestions with Premium flag
+      const isPremium = user.subscriptionPlan === 'premium';
+      const suggestions = await suggestContentTypes(objective, nicheProfile, isPremium);
       
       res.json(suggestions);
     } catch (error) {
@@ -216,10 +223,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let isContentLimited = false;
       let upgradeMessage = null;
       
-      if (user.subscriptionPlan === 'free' && generatedText.length > 200) {
-        finalContent = generatedText.substring(0, 200) + "...";
+      if (user.subscriptionPlan === 'free' && generatedText.length > 450) {
+        finalContent = generatedText.substring(0, 450) + "...";
         isContentLimited = true;
-        upgradeMessage = "🚀 Passa al Premium per vedere il contenuto completo e avere generazioni illimitate!";
+        upgradeMessage = "🚀 Passa al Premium per vedere il contenuto completo, suggerimenti foto/video e generazioni illimitate!";
       }
       
       // Save generated content (full content for premium, limited for free)
@@ -366,7 +373,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               name: 'NicheScribe AI Premium',
               description: 'Generazioni illimitate e contenuti completi',
             },
-            unit_amount: 1999, // €19.99/month
+            unit_amount: 499, // €4.99/month
             recurring: {
               interval: 'month',
             },
