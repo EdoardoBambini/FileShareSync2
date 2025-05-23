@@ -74,6 +74,19 @@ export default function Landing() {
             </div>
           </CardContent>
         </Card>
+        
+        {/* Footer legale */}
+        <div className="mt-8 text-center text-xs text-slate-400 space-x-4">
+          <a href="/privacy" className="hover:text-slate-600 transition-colors">
+            Privacy Policy
+          </a>
+          <span>•</span>
+          <a href="/terms" className="hover:text-slate-600 transition-colors">
+            Termini di Servizio
+          </a>
+          <span>•</span>
+          <span>© 2025 NicheScribe AI</span>
+        </div>
       </div>
     </div>
   );

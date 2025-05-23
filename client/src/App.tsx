@@ -13,6 +13,8 @@ import ContentOutput from "@/pages/ContentOutput";
 import ContentSuggestion from "@/pages/ContentSuggestion";
 import Subscribe from "@/pages/Subscribe";
 import Account from "@/pages/Account";
+import PrivacyPolicy from "@/pages/PrivacyPolicy";
+import TermsOfService from "@/pages/TermsOfService";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -34,6 +36,9 @@ function Router() {
           <Route path="/account" component={Account} />
         </>
       )}
+      {/* Pagine legali accessibili a tutti */}
+      <Route path="/privacy" component={PrivacyPolicy} />
+      <Route path="/terms" component={TermsOfService} />
       <Route component={NotFound} />
     </Switch>
   );
