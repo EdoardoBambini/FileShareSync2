@@ -45,7 +45,7 @@ export default function Navigation() {
               {location.includes("/content-type") && "Seleziona Tipo Contenuto"}
               {location.includes("/content-input") && "Inserisci Dettagli"}
               {location.includes("/content-output") && "Contenuto Generato"}
-              {location.includes("/onboarding") && "Configurazione Profilo"}
+              {location.includes("/onboarding") && "Configurazione Progetto"}
               {location.includes("/account") && "Impostazioni Account"}
             </div>
           )}

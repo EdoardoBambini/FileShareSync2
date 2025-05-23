@@ -47,7 +47,7 @@ export default function NicheProfileForm({
       <CardContent>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div>
-            <Label htmlFor="name">Nome della Nicchia</Label>
+            <Label htmlFor="name">Nome del Progetto</Label>
             <Input
               id="name"
               placeholder="Es: Cura di bonsai da interno per principianti"

@@ -121,8 +121,14 @@ Lo script deve:
     }
 
     return generatedText;
-  } catch (error) {
+  } catch (error: any) {
     console.error("Errore nella generazione del contenuto:", error);
+    if (error.status === 429 || error.code === 'insufficient_quota') {
+      throw new Error("Quota API OpenAI superata. Verifica il tuo piano di abbonamento su https://platform.openai.com e aggiungi crediti al tuo account.");
+    }
+    if (error.status === 401) {
+      throw new Error("Chiave API OpenAI non valida. Verifica le tue credenziali su https://platform.openai.com");
+    }
     throw new Error("Errore durante la generazione del contenuto. Riprova più tardi.");
   }
 }

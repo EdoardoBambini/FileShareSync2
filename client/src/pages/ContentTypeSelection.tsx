@@ -99,7 +99,7 @@ export default function ContentTypeSelection() {
 
         <div className="text-center mb-12">
           <div className="text-sm text-slate-600 mb-2">
-            Profilo Nicchia Attivo: <span className="font-medium text-slate-900">{selectedProfile.name}</span>
+            Progetto Attivo: <span className="font-medium text-slate-900">{selectedProfile.name}</span>
           </div>
           <h1 className="text-3xl font-bold text-slate-900 mb-4">Cosa vuoi creare oggi?</h1>
           <p className="text-lg text-slate-600">Scegli il tipo di contenuto che desideri generare</p>
