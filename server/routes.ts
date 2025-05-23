@@ -22,7 +22,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
+      // Controlla e resetta i crediti settimanali se necessario
+      const user = await storage.checkAndResetWeeklyCredits(userId);
       res.json(user);
     } catch (error) {
       console.error("Error fetching user:", error);

@@ -20,6 +20,7 @@ export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
   upsertUser(user: UpsertUser): Promise<User>;
   decreaseUserCredits(userId: string): Promise<void>;
+  checkAndResetWeeklyCredits(userId: string): Promise<User>;
   updateUserSubscription(userId: string, plan: string, stripeCustomerId?: string, stripeSubscriptionId?: string): Promise<User>;
   
   // Niche profile operations
@@ -143,6 +144,49 @@ export class DatabaseStorage implements IStorage {
         updatedAt: new Date() 
       })
       .where(eq(users.id, userId));
+  }
+
+  async checkAndResetWeeklyCredits(userId: string): Promise<User> {
+    const [user] = await db.select().from(users).where(eq(users.id, userId));
+    
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    // Se è utente premium, non gestire i crediti
+    if (user.subscriptionPlan === 'premium') {
+      return user;
+    }
+
+    const now = new Date();
+    const lastReset = user.lastCreditsReset ? new Date(user.lastCreditsReset) : new Date(user.createdAt!);
+    
+    // Calcola lunedì della settimana corrente
+    const currentMonday = new Date(now);
+    currentMonday.setDate(now.getDate() - now.getDay() + 1);
+    currentMonday.setHours(0, 0, 0, 0);
+    
+    // Calcola lunedì della settimana dell'ultimo reset
+    const lastResetMonday = new Date(lastReset);
+    lastResetMonday.setDate(lastReset.getDate() - lastReset.getDay() + 1);
+    lastResetMonday.setHours(0, 0, 0, 0);
+    
+    // Se è una nuova settimana, resetta i crediti
+    if (currentMonday.getTime() > lastResetMonday.getTime()) {
+      const [updatedUser] = await db
+        .update(users)
+        .set({
+          creditsRemaining: 3,
+          lastCreditsReset: now,
+          updatedAt: now,
+        })
+        .where(eq(users.id, userId))
+        .returning();
+      
+      return updatedUser;
+    }
+    
+    return user;
   }
 
   async updateUserSubscription(userId: string, plan: string, stripeCustomerId?: string, stripeSubscriptionId?: string): Promise<User> {

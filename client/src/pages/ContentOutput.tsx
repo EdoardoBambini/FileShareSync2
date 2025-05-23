@@ -20,8 +20,8 @@ export default function ContentOutput() {
   const [copied, setCopied] = useState(false);
   const [isContentLimited, setIsContentLimited] = useState(false);
   const [upgradeMessage, setUpgradeMessage] = useState<string | null>(null);
-  const [creditsRemaining, setCreditsRemaining] = useState<number>(3);
-  const [subscriptionPlan, setSubscriptionPlan] = useState<string>("free");
+  // Usa i crediti e piano dal database tramite useAuth
+  const { user } = useAuth();
   const { toast } = useToast();
 
   // Funzione per generare contenuto dai suggerimenti AI
