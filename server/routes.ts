@@ -11,7 +11,7 @@ if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
 }
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2023-10-16",
+  apiVersion: "2025-04-30.basil",
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -173,30 +173,77 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = req.user.claims.sub;
       const { nicheProfileId, contentType, inputData } = req.body;
       
+      // Get user info to check subscription and credits
+      const user = await storage.getUser(userId);
+      if (!user) {
+        return res.status(404).json({ message: "Utente non trovato" });
+      }
+      
+      // Check credits for free users
+      if (user.subscriptionPlan === 'free') {
+        if (user.creditsRemaining <= 0) {
+          return res.status(402).json({ 
+            message: "Crediti esauriti! Passa al Premium per generazioni illimitate.", 
+            type: "credits_exhausted",
+            upgradeRequired: true 
+          });
+        }
+        // Decrease credits for free users
+        await storage.decreaseUserCredits(userId);
+      }
+      
       // Get niche profile
       const nicheProfile = await storage.getNicheProfile(nicheProfileId);
       if (!nicheProfile || nicheProfile.userId !== userId) {
-        return res.status(404).json({ message: "Niche profile not found" });
+        return res.status(404).json({ message: "Progetto non trovato" });
       }
       
       // Generate content using OpenAI
       const generatedText = await generateContent({
-        nicheProfile,
+        nicheProfile: {
+          name: nicheProfile.name,
+          targetAudience: nicheProfile.targetAudience,
+          contentGoal: nicheProfile.contentGoal,
+          toneOfVoice: nicheProfile.toneOfVoice,
+          keywords: nicheProfile.keywords || undefined,
+        },
         contentType,
         inputData,
       });
       
-      // Save generated content
+      // For free users, limit content length and add upgrade prompt
+      let finalContent = generatedText;
+      let isContentLimited = false;
+      let upgradeMessage = null;
+      
+      if (user.subscriptionPlan === 'free' && generatedText.length > 200) {
+        finalContent = generatedText.substring(0, 200) + "...";
+        isContentLimited = true;
+        upgradeMessage = "🚀 Passa al Premium per vedere il contenuto completo e avere generazioni illimitate!";
+      }
+      
+      // Save generated content (full content for premium, limited for free)
       const contentData = insertGeneratedContentSchema.parse({
         userId,
         nicheProfileId,
         contentType,
         inputData,
-        generatedText,
+        generatedText: finalContent,
       });
       
       const savedContent = await storage.saveGeneratedContent(contentData);
-      res.json(savedContent);
+      
+      // Add premium upgrade info to response
+      const response = {
+        ...savedContent,
+        isContentLimited,
+        fullContentPreview: isContentLimited ? generatedText.substring(0, 400) + "..." : null,
+        upgradeMessage,
+        creditsRemaining: user.creditsRemaining - (user.subscriptionPlan === 'free' ? 1 : 0),
+        subscriptionPlan: user.subscriptionPlan
+      };
+      
+      res.json(response);
     } catch (error) {
       if (error instanceof z.ZodError) {
         return res.status(400).json({ message: "Invalid input data", errors: error.errors });

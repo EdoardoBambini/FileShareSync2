@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Copy, Download, RefreshCw, Save, ThumbsUp, ThumbsDown, Check } from "lucide-react";
+import { ArrowLeft, Copy, Download, RefreshCw, Save, ThumbsUp, ThumbsDown, Check, Crown, Zap } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import type { NicheProfile, GeneratedContent } from "@shared/schema";
@@ -18,6 +18,10 @@ export default function ContentOutput() {
   const [generatedContent, setGeneratedContent] = useState<GeneratedContent | null>(null);
   const [editedText, setEditedText] = useState<string>("");
   const [copied, setCopied] = useState(false);
+  const [isContentLimited, setIsContentLimited] = useState(false);
+  const [upgradeMessage, setUpgradeMessage] = useState<string | null>(null);
+  const [creditsRemaining, setCreditsRemaining] = useState<number>(3);
+  const [subscriptionPlan, setSubscriptionPlan] = useState<string>("free");
   const { toast } = useToast();
 
   // Funzione per generare contenuto dai suggerimenti AI
@@ -42,12 +46,62 @@ export default function ContentOutput() {
     onSuccess: (data) => {
       setGeneratedContent(data);
       setEditedText(data.generatedText);
+      setIsContentLimited(data.isContentLimited || false);
+      setUpgradeMessage(data.upgradeMessage || null);
+      setCreditsRemaining(data.creditsRemaining || 0);
+      setSubscriptionPlan(data.subscriptionPlan || "free");
       sessionStorage.setItem("generatedContent", JSON.stringify(data));
+      
+      if (data.upgradeMessage) {
+        toast({
+          title: "Contenuto Limitato",
+          description: data.upgradeMessage,
+          variant: "default",
+        });
+      }
+    },
+    onError: (error: any) => {
+      const errorMessage = error.message || "Errore durante la generazione del contenuto.";
+      
+      if (error.type === "credits_exhausted") {
+        toast({
+          title: "Crediti Esauriti!",
+          description: "Passa al Premium per generazioni illimitate!",
+          variant: "destructive",
+        });
+        setCreditsRemaining(0);
+      } else {
+        toast({
+          title: "Errore",
+          description: errorMessage,
+          variant: "destructive",
+        });
+      }
+    },
+  });
+
+  // Mutation per creare abbonamento Premium
+  const createSubscriptionMutation = useMutation({
+    mutationFn: async () => {
+      const response = await apiRequest("POST", "/api/create-subscription", {});
+      return response.json();
+    },
+    onSuccess: (data) => {
+      if (data.clientSecret) {
+        // Qui integreremo Stripe per il pagamento
+        toast({
+          title: "Abbonamento Premium Attivato!",
+          description: "Ora hai accesso illimitato a tutti i contenuti!",
+          variant: "default",
+        });
+        setSubscriptionPlan("premium");
+        setCreditsRemaining(999);
+      }
     },
     onError: (error: any) => {
       toast({
-        title: "Errore",
-        description: error.message || "Errore durante la generazione del contenuto.",
+        title: "Errore Abbonamento",
+        description: error.message || "Errore durante l'attivazione del Premium.",
         variant: "destructive",
       });
     },
