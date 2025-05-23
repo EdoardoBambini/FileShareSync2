@@ -103,15 +103,15 @@ export default function Onboarding() {
   const isFirstProfile = !editId;
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       <Navigation />
       
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {!isFirstProfile && (
           <Button
             variant="ghost"
             onClick={handleCancel}
-            className="mb-6 text-slate-600 hover:text-slate-900"
+            className="mb-6 text-slate-600 hover:text-slate-900 transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Torna alla Dashboard

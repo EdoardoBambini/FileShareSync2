@@ -129,25 +129,27 @@ export default function ContentSuggestion() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       <Navigation />
       
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <Button
           variant="ghost"
           onClick={handleGoBack}
-          className="mb-6 text-muted-foreground hover:text-foreground"
+          className="mb-6 text-slate-600 hover:text-slate-900 transition-colors"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Torna alla Dashboard
         </Button>
 
-        <div className="text-center mb-8">
-          <div className="text-sm text-muted-foreground mb-2">
-            Progetto Attivo: <span className="font-medium text-foreground">{selectedProfile.name}</span>
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="text-sm text-slate-600 mb-3 bg-slate-50 inline-block px-4 py-2 rounded-lg">
+            Progetto Attivo: <span className="font-semibold text-primary">{selectedProfile.name}</span>
           </div>
-          <h1 className="text-3xl font-bold text-foreground mb-4">Cosa vuoi comunicare oggi?</h1>
-          <p className="text-lg text-muted-foreground">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-4 leading-tight">
+            Cosa vuoi comunicare oggi?
+          </h1>
+          <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
             Descrivi il tuo obiettivo e l'AI suggerirà i formati di contenuto più efficaci
           </p>
         </div>

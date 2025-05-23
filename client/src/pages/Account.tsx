@@ -104,23 +104,28 @@ export default function Account() {
   const stats = getStats();
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       <Navigation />
       
       {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <Button
           variant="ghost"
           onClick={handleGoBack}
-          className="mb-6 text-slate-600 hover:text-slate-900"
+          className="mb-6 text-slate-600 hover:text-slate-900 transition-colors"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Torna alla Dashboard
         </Button>
 
-        <h1 className="text-3xl font-bold text-slate-900 mb-8">Il Mio Account</h1>
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-4 leading-tight">Il Mio Account</h1>
+          <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+            Gestisci le tue informazioni e monitora l'attività del tuo account
+          </p>
+        </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Profile Info */}
           <div className="lg:col-span-2 space-y-6">
             <Card className="shadow-lg">
