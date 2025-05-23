@@ -98,7 +98,10 @@ export default function ContentSuggestion() {
   const handleSelectSuggestion = (suggestion: ContentSuggestion) => {
     sessionStorage.setItem("contentType", suggestion.type);
     sessionStorage.setItem("contentObjective", form.getValues("objective"));
-    setLocation("/content-input");
+    sessionStorage.setItem("contentTitle", suggestion.title);
+    sessionStorage.setItem("contentDescription", suggestion.description);
+    sessionStorage.setItem("aiSuggested", "true");
+    setLocation("/content-output");
   };
 
   const handleManualSelection = () => {
