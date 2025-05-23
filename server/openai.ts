@@ -176,14 +176,19 @@ Rispondi in formato JSON con questa struttura:
     });
 
     const generatedText = response.choices[0].message.content;
+    console.log("Risposta AI grezza:", generatedText);
+    
     if (!generatedText) {
       throw new Error("Nessun suggerimento generato dall'AI");
     }
 
     try {
-      return JSON.parse(generatedText);
+      const parsed = JSON.parse(generatedText);
+      console.log("JSON parsed con successo:", parsed);
+      return parsed;
     } catch (parseError) {
-      console.error("Errore parsing JSON:", generatedText);
+      console.error("Errore parsing JSON:", parseError);
+      console.error("Testo che ha causato l'errore:", generatedText);
       // Fallback se il JSON non è valido
       return {
         suggestions: [
