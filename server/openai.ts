@@ -180,7 +180,28 @@ Rispondi in formato JSON con questa struttura:
       throw new Error("Nessun suggerimento generato dall'AI");
     }
 
-    return JSON.parse(generatedText);
+    try {
+      return JSON.parse(generatedText);
+    } catch (parseError) {
+      console.error("Errore parsing JSON:", generatedText);
+      // Fallback se il JSON non è valido
+      return {
+        suggestions: [
+          {
+            type: "instagram",
+            title: "Post Instagram",
+            description: "Caption coinvolgente per promuovere il tuo obiettivo",
+            reason: "Instagram è perfetto per contenuti visivi e coinvolgenti"
+          },
+          {
+            type: "facebook", 
+            title: "Post Facebook",
+            description: "Post dettagliato per raggiungere il tuo pubblico",
+            reason: "Facebook permette contenuti più lunghi e informativi"
+          }
+        ]
+      };
+    }
   } catch (error: any) {
     console.error("Errore nella generazione dei suggerimenti:", error);
     if (error.status === 429 || error.code === 'insufficient_quota') {
