@@ -27,7 +27,7 @@ export default function Dashboard() {
   const handleGenerateContent = (profile: NicheProfile) => {
     // Store selected profile in sessionStorage for content generation flow
     sessionStorage.setItem("selectedProfile", JSON.stringify(profile));
-    setLocation("/content-type");
+    setLocation("/content-suggestion");
   };
 
   if (isLoading) {
