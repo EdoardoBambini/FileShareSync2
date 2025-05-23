@@ -1,0 +1,255 @@
+Okay, questo è un ottimo modo per procedere se stai usando un'AI che può interpretare istruzioni per la generazione di UI o codice schermata per schermata.
+
+Il trucco è essere estremamente specifici per ogni schermata, indicando:
+
+Nome/Scopo della Schermata.
+
+Elementi UI principali (pulsanti, campi di testo, menu a tendina, liste, ecc.).
+
+Testo visibile (etichette, placeholder, titoli).
+
+Azioni base (cosa succede quando si clicca un pulsante – a livello di navigazione o di trigger).
+
+Dati da visualizzare (se applicabile).
+
+Ecco come potresti strutturare i prompt per un'AI "esperta di coding" o un tool di UI generation, schermata per schermata, basandoti sul tuo dettagliato prompt di NicheScribe AI. Presumo che l'AI possa mantenere un contesto o che tu possa alimentare questi prompt in sequenza.
+
+Istruzione Generale Iniziale (da dare una volta all'AI prima di iniziare con le schermate):
+"Voglio creare le schermate per un'applicazione web chiamata 'NicheScribe AI'. L'applicazione deve avere un design pulito, moderno, intuitivo e professionale. L'obiettivo è la facilità d'uso per freelance e piccole imprese. Le schermate devono essere responsive per l'uso su desktop e browser mobili. Procederemo schermata per schermata."
+
+Prompt per Schermata (da fornire uno alla volta):
+
+Schermata 1: Registrazione Utente
+
+Genera la schermata di "Registrazione Utente" per NicheScribe AI.
+Elementi e layout:
+1.  Titolo: "Crea il tuo Account NicheScribe AI"
+2.  Campo di input testo: Etichetta "Nome Completo", Placeholder "Mario Rossi"
+3.  Campo di input testo: Etichetta "Email", Placeholder "tuaemail@esempio.com", Tipo: email
+4.  Campo di input testo: Etichetta "Password", Placeholder "Minimo 8 caratteri", Tipo: password
+5.  Campo di input testo: Etichetta "Conferma Password", Placeholder "Reinserisci la password", Tipo: password
+6.  Checkbox: Testo "Accetto i Termini di Servizio e l'Informativa sulla Privacy" (il testo 'Termini di Servizio' e 'Informativa sulla Privacy' dovrebbero essere link cliccabili, ma per ora basta il testo).
+7.  Pulsante Primario: Testo "REGISTRATI" (Azione: valida i campi e procede al login o alla dashboard/onboarding).
+8.  Testo con Link: "Hai già un account? Accedi qui" (Azione: naviga alla schermata di Login).
+9.  (Opzionale, ma consigliato per MVP moderno) Pulsante "Registrati con Google".
+10. (Opzionale, ma consigliato per MVP moderno) Pulsante "Registrati con Apple".
+Assicurati che ci sia una chiara gestione degli errori di validazione per ogni campo (es. email non valida, password non corrispondenti).
+
+
+Schermata 2: Login Utente
+
+Genera la schermata di "Login Utente" per NicheScribe AI.
+Elementi e layout:
+1.  Titolo: "Accedi a NicheScribe AI"
+2.  Campo di input testo: Etichetta "Email", Placeholder "tuaemail@esempio.com", Tipo: email
+3.  Campo di input testo: Etichetta "Password", Placeholder "La tua password", Tipo: password
+4.  Link: Testo "Password dimenticata?" (Azione: naviga alla schermata di recupero password).
+5.  Pulsante Primario: Testo "ACCEDI" (Azione: valida i campi e procede alla dashboard).
+6.  Testo con Link: "Non hai un account? Registrati ora" (Azione: naviga alla schermata di Registrazione).
+7.  (Opzionale, ma consigliato per MVP moderno) Pulsante "Accedi con Google".
+8.  (Opzionale, ma consigliato per MVP moderno) Pulsante "Accedi con Apple".
+Assicurati che ci sia una chiara gestione degli errori di validazione (es. credenziali errate).
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Prompt
+IGNORE_WHEN_COPYING_END
+
+Schermata 3: Onboarding - Definizione Profilo Nicchia (se primo accesso o se l'utente non ha profili)
+
+Genera la schermata di "Onboarding - Crea il tuo Primo Profilo Nicchia" per NicheScribe AI. Questa schermata appare dopo la prima registrazione o se l'utente non ha profili nicchia attivi.
+Elementi e layout:
+1.  Titolo: "Iniziamo! Definisci la tua Prima Nicchia"
+2.  Sottotitolo/Testo esplicativo: "Questo profilo aiuterà l'AI a generare contenuti perfetti per te."
+3.  Campo di input testo (multilinea piccolo): Etichetta "Nome della Nicchia", Placeholder "Es: Cura di bonsai da interno per principianti"
+4.  Campo di input testo (multilinea grande): Etichetta "Descrizione del Pubblico Target", Placeholder "Chi sono, cosa cercano, livello di conoscenza, loro problemi e aspirazioni..."
+5.  Menu a tendina: Etichetta "Obiettivo Principale dei Contenuti", Opzioni: "Informare", "Vendere", "Intrattenere", "Costruire Autorità"
+6.  Menu a tendina (o gruppo di radio button/slider): Etichetta "Tono di Voce Preferito", Opzioni: "Formale", "Amichevole", "Tecnico", "Umoristico", "Empatico"
+7.  Campo di input testo (tags input field se possibile, altrimenti testo semplice): Etichetta "Keywords Principali (Opzionale, max 5)", Placeholder "bonsai, cura piante, principianti..."
+8.  Pulsante Primario: Testo "SALVA PROFILO E CONTINUA" (Azione: salva i dati e naviga alla Dashboard o alla schermata di selezione tipo contenuto).
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Prompt
+IGNORE_WHEN_COPYING_END
+
+Schermata 4: Dashboard / Lista Profili Nicchia
+
+Genera la schermata "Dashboard / I Miei Profili Nicchia" per NicheScribe AI.
+Elementi e layout:
+1.  Titolo: "I Miei Profili Nicchia"
+2.  Pulsante Primario in alto a destra o in posizione prominente: Testo "+ CREA NUOVO PROFILO NICCHIA" (Azione: naviga alla schermata di creazione/modifica profilo nicchia).
+3.  Sezione Lista Profili:
+    *   Se nessun profilo esiste: Messaggio "Non hai ancora creato nessun profilo nicchia. Clicca su '+ CREA NUOVO PROFILO NICCHIA' per iniziare."
+    *   Se esistono profili: Visualizzare una lista/card per ogni profilo salvato. Ogni elemento della lista/card deve mostrare:
+        *   Nome del Profilo Nicchia (testo grande, cliccabile).
+        *   (Opzionale) Breve riassunto o icona del Tono/Obiettivo.
+        *   Pulsante/Icona "Modifica Profilo" (Azione: naviga alla schermata di modifica profilo nicchia, pre-compilata).
+        *   Pulsante Primario "GENERA CONTENUTO" specifico per quel profilo (Azione: naviga alla schermata di Selezione Tipo Contenuto, passando l'ID del profilo).
+4.  Barra di navigazione laterale o superiore persistente con link a: "Dashboard/Profili", "Il Mio Account/Profilo Utente", "Piani e Abbonamento", "Logout".
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Prompt
+IGNORE_WHEN_COPYING_END
+
+Schermata 5: Creazione/Modifica Profilo Nicchia (simile all'Onboarding, ma per modifica o creazione successiva)
+
+Genera la schermata "Crea/Modifica Profilo Nicchia" per NicheScribe AI. Questa schermata è usata sia per creare nuovi profili dalla dashboard sia per modificare quelli esistenti.
+Elementi e layout:
+1.  Titolo: "Crea Nuovo Profilo Nicchia" (o "Modifica Profilo Nicchia: [Nome Profilo Nicchia]" se in modalità modifica).
+2.  Campo di input testo (multilinea piccolo): Etichetta "Nome della Nicchia", Placeholder "Es: Cura di bonsai da interno per principianti"
+3.  Campo di input testo (multilinea grande): Etichetta "Descrizione del Pubblico Target", Placeholder "Chi sono, cosa cercano, livello di conoscenza, loro problemi e aspirazioni..."
+4.  Menu a tendina: Etichetta "Obiettivo Principale dei Contenuti", Opzioni: "Informare", "Vendere", "Intrattenere", "Costruire Autorità"
+5.  Menu a tendina (o gruppo di radio button/slider): Etichetta "Tono di Voce Preferito", Opzioni: "Formale", "Amichevole", "Tecnico", "Umoristico", "Empatico"
+6.  Campo di input testo (tags input field se possibile, altrimenti testo semplice): Etichetta "Keywords Principali (Opzionale, max 5)", Placeholder "bonsai, cura piante, principianti..."
+7.  Pulsante Primario: Testo "SALVA PROFILO NICCHIA" (Azione: salva i dati e torna alla Dashboard).
+8.  Pulsante Secondario/Link (solo in modalità modifica): Testo "ELIMINA PROFILO" (Azione: chiede conferma e poi elimina il profilo).
+9.  Pulsante/Link "Annulla" o "Indietro" (Azione: torna alla Dashboard senza salvare).
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Prompt
+IGNORE_WHEN_COPYING_END
+
+Schermata 6: Selezione Tipo di Contenuto
+
+Genera la schermata "Scegli il Tipo di Contenuto da Generare" per NicheScribe AI.
+Elementi e layout:
+1.  Indicazione in alto: "Profilo Nicchia Attivo: [Nome del Profilo Nicchia Selezionato]"
+2.  Titolo: "Cosa vuoi creare oggi?"
+3.  Lista o griglia di opzioni selezionabili (con icone descrittive se possibile):
+    *   "Post Facebook"
+    *   "Post Instagram (caption)"
+    *   "Descrizione Prodotto E-commerce"
+    *   "Idea Articolo Blog (titolo + scaletta)"
+    *   "Script Breve Video (30-60 sec)"
+4.  Ogni opzione, una volta cliccata, naviga alla schermata di input specifico per quel tipo di contenuto.
+5.  Pulsante/Link "Indietro" (Azione: torna alla Dashboard).
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Prompt
+IGNORE_WHEN_COPYING_END
+
+Schermata 7.1: Input Specifico - Post Social (Facebook/Instagram)
+
+Genera la schermata "Dettagli per Post Social" per NicheScribe AI.
+Elementi e layout:
+1.  Indicazione in alto: "Profilo Nicchia: [Nome Profilo Nicchia]" e "Tipo Contenuto: Post Facebook/Instagram"
+2.  Titolo: "Crea il tuo Post Social"
+3.  Campo di input testo (multilinea grande): Etichetta "Argomento principale del post o messaggio chiave", Placeholder "Es: 5 errori comuni nella cura dei bonsai e come evitarli"
+4.  Campo di input testo: Etichetta "Call to Action (Opzionale)", Placeholder "Es: Visita il nostro sito, Commenta qui sotto"
+5.  (Opzionale) Campo di input testo (tags input field): Etichetta "Hashtag suggeriti (Opzionale)", Placeholder "#bonsai #curapiante"
+6.  Pulsante Primario: Testo "GENERA BOZZA POST" (Azione: invia i dati all'AI e naviga alla schermata di Visualizzazione Output).
+7.  Pulsante/Link "Indietro" (Azione: torna alla schermata Selezione Tipo Contenuto).
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Prompt
+IGNORE_WHEN_COPYING_END
+
+Schermata 7.2: Input Specifico - Descrizione Prodotto E-commerce
+
+Genera la schermata "Dettagli per Descrizione Prodotto" per NicheScribe AI.
+Elementi e layout:
+1.  Indicazione in alto: "Profilo Nicchia: [Nome Profilo Nicchia]" e "Tipo Contenuto: Descrizione Prodotto"
+2.  Titolo: "Crea la tua Descrizione Prodotto"
+3.  Campo di input testo: Etichetta "Nome Prodotto", Placeholder "Es: Bonsai Ficus Ginseng 'Little Gem'"
+4.  Campo di input testo (multilinea, suggerire uso di elenchi puntati): Etichetta "Caratteristiche Chiave del Prodotto", Placeholder "- Altezza: 20cm\n- Vaso in ceramica incluso\n- Facile da curare"
+5.  Campo di input testo (multilinea, suggerire uso di elenchi puntati): Etichetta "Benefici per il Cliente", Placeholder "- Aggiunge un tocco di natura alla tua casa\n- Regalo perfetto per gli amanti delle piante\n- Migliora la qualità dell'aria"
+6.  Campo di input testo: Etichetta "Call to Action (Opzionale)", Placeholder "Es: Aggiungi al carrello ora!, Scopri di più"
+7.  Pulsante Primario: Testo "GENERA BOZZA DESCRIZIONE" (Azione: invia i dati all'AI e naviga alla schermata di Visualizzazione Output).
+8.  Pulsante/Link "Indietro" (Azione: torna alla schermata Selezione Tipo Contenuto).
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Prompt
+IGNORE_WHEN_COPYING_END
+
+(Dovrai creare prompt simili per "Idea Articolo Blog" e "Script Breve Video", seguendo la logica degli input specifici delineati nel tuo prompt originale.)
+
+Schermata 8: Visualizzazione e Modifica Output Generato
+
+Genera la schermata "Contenuto Generato" per NicheScribe AI.
+Elementi e layout:
+1.  Indicazione in alto: "Profilo Nicchia: [Nome Profilo Nicchia]" e "Tipo Contenuto: [Tipo di Contenuto Generato]"
+2.  Titolo: "Ecco la tua Bozza!" (o simile)
+3.  Area di testo grande (editor RTF semplice se possibile, altrimenti testo semplice modificabile): Mostra il contenuto generato dall'AI.
+4.  Barra degli strumenti sopra o sotto l'area di testo con pulsanti/icone per:
+    *   "Copia Testo" (Azione: copia il contenuto negli appunti).
+    *   "Salva Bozza" (Azione: salva il contenuto generato associato al profilo nicchia e input, magari in una sezione "Bozze Salvate").
+    *   "Esporta come .txt" (Azione: download del file).
+    *   "Genera Variante" (Azione: richiede all'AI una nuova versione basata sugli stessi input iniziali, aggiornando l'area di testo).
+5.  Pulsante/Link "Genera Nuovo Contenuto" (Azione: torna alla Dashboard o Selezione Tipo Contenuto).
+6.  (Opzionale) Sistema di feedback semplice (es. pollici su/giù, o stelle) per valutare la qualità della generazione.
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Prompt
+IGNORE_WHEN_COPYING_END
+
+Schermata 9: Profilo Utente / Il Mio Account
+
+Genera la schermata "Il Mio Account" per NicheScribe AI.
+Elementi e layout:
+1.  Titolo: "Il Mio Account"
+2.  Sezione "Informazioni Personali":
+    *   Etichetta "Nome Completo": Valore [Nome Utente] (modificabile).
+    *   Etichetta "Email": Valore [Email Utente] (generalmente non modificabile o con flusso di verifica per modifica).
+3.  Sezione "Gestione Password":
+    *   Pulsante/Link "Modifica Password" (Azione: apre modale o sezione con campi: Password Attuale, Nuova Password, Conferma Nuova Password).
+4.  Pulsante Primario "SALVA MODIFICHE" (per le informazioni personali).
+5.  Link/Pulsante "Gestisci Abbonamento" (Azione: naviga alla schermata Piani e Abbonamento).
+6.  Link/Pulsante "Logout" (Azione: effettua il logout e torna alla schermata di Login).
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Prompt
+IGNORE_WHEN_COPYING_END
+
+Schermata 10: Piani e Abbonamento
+
+Genera la schermata "Piani e Abbonamento" per NicheScribe AI.
+Elementi e layout:
+1.  Titolo: "Scegli il Piano Perfetto per Te" (o "Il Tuo Abbonamento Attuale" se l'utente è già abbonato).
+2.  Se l'utente ha un piano attivo:
+    *   Mostra chiaramente: "Piano Attuale: [Nome Piano]", "Prossimo Rinnovo: [Data]", "Costo: [Prezzo]".
+    *   Opzioni per "Modifica Piano" o "Cancella Abbonamento".
+3.  Visualizzazione dei Piani Disponibili (es. in card affiancate):
+    *   **Piano "Basic"**: Nome, Prezzo (es. 9€/mese), Lista Features (es. "1 Profilo Nicchia", "20 Generazioni/mese", "Funzionalità Base"), Pulsante "SCEGLI BASIC" o "DOWNGRADE A BASIC".
+    *   **Piano "Pro"**: Nome, Prezzo (es. 29€/mese), Lista Features (es. "5 Profili Nicchia", "100 Generazioni/mese", "Analisi SEO Base"), Pulsante "SCEGLI PRO" o "UPGRADE A PRO".
+    *   **Piano "Premium"**: Nome, Prezzo (es. 49€/mese), Lista Features (es. "Profili Illimitati", "Generazioni Illimitate", "Tutte le Funzionalità"), Pulsante "SCEGLI PREMIUM" o "UPGRADE A PREMIUM".
+    *   Evidenziare il piano "più popolare" o quello consigliato.
+    *   Opzione per pagamento annuale con sconto.
+4.  Sezione "Pacchetti Crediti" (se implementati):
+    *   Titolo: "Hai Bisogno Solo di Qualche Generazione?"
+    *   Opzione 1: "10 Crediti - 5€" - Pulsante "ACQUISTA 10 CREDITI".
+    *   Opzione 2: "25 Crediti - 10€" - Pulsante "ACQUISTA 25 CREDITI".
+    *   Visualizzazione "Crediti Attuali: [Numero Crediti]" se l'utente ne ha.
+5.  Link a "FAQ su Piani e Pagamenti" o "Contatta Supporto".
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Prompt
+IGNORE_WHEN_COPYING_END
+
+Considerazioni Finali per l'AI:
+
+Consistenza: Mantieni uno stile visivo e di interazione consistente tra tutte le schermate.
+
+Navigazione Chiara: Assicurati che l'utente capisca sempre dove si trova e come tornare indietro o procedere.
+
+Feedback Utente: Prevedi messaggi di successo, errore, caricamento.
+
+Questi prompt dovrebbero dare all'AI una base solida per generare le UI o lo scheletro del codice per ogni schermata. Ricorda che probabilmente dovrai iterare e rifinire l'output dell'AI. Buona fortuna!
