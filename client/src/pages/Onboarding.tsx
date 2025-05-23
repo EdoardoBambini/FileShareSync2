@@ -124,7 +124,7 @@ export default function Onboarding() {
             <div className="flex items-center justify-center space-x-4 mb-4">
               <div className="flex items-center">
                 <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm font-medium">1</div>
-                <span className="ml-2 text-sm font-medium text-slate-700">Profilo Nicchia</span>
+                <span className="ml-2 text-sm font-medium text-slate-700">Progetto</span>
               </div>
               <div className="w-16 h-1 bg-slate-200 rounded"></div>
               <div className="flex items-center">
@@ -139,10 +139,10 @@ export default function Onboarding() {
           {isFirstProfile && (
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold text-slate-900 mb-4">
-                Iniziamo! Definisci la tua Prima Nicchia
+                Iniziamo! Definisci il tuo Primo Progetto
               </h1>
               <p className="text-lg text-slate-600">
-                Questo profilo aiuterà l'AI a generare contenuti perfetti per te.
+                Questo progetto aiuterà l'AI a generare contenuti perfetti per te.
               </p>
             </div>
           )}

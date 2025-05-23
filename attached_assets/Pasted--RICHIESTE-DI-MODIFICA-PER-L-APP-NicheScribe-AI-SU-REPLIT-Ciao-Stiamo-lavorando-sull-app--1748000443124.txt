@@ -1,0 +1,65 @@
+### RICHIESTE DI MODIFICA PER L'APP "NicheScribe AI" SU REPLIT ###
+
+Ciao! Stiamo lavorando sull'app "NicheScribe AI" e abbiamo bisogno di apportare alcune modifiche e correzioni.
+Di seguito i dettagli:
+
+**1. MODIFICHE GLOBALI DI STILE E TERMINOLOGIA:**
+
+   *   **A. Cambio Font Globale:**
+      *   **Obiettivo:** Utilizzare un font più elegante e moderno per tutta l'applicazione (testi, pulsanti, etichette, ecc.).
+      *   **Azione:**
+         1.  Identificare il file CSS principale o il sistema di theming utilizzato (es. `[NomeFileCSS.css]`, `style.css`, o configurazione Tailwind/Bootstrap).
+         2.  Importare e applicare un nuovo font. Esempi di font eleganti: "Lato", "Montserrat", "Roboto Slab", "Playfair Display". Se possibile, utilizza Google Fonts per facilità di integrazione. Scegliere un font che abbia una buona leggibilità.
+         3.  Aggiornare le regole CSS `font-family` globali (es. sul `body` o su selettori di base) per utilizzare il nuovo font. Assicurarsi che il font venga applicato a tutti gli elementi testuali.
+      *   **Font Suggerito (se non hai preferenze):** "Montserrat" (o "Lato").
+
+   *   **B. Traduzione e Sostituzione Terminologia:**
+      *   **Obiettivo:** Assicurarsi che la maggior parte dell'interfaccia utente sia in italiano e sostituire il termine "Nicchia" con "[NOME TUA AZIENDA/PROGETTO]".
+      *   **Azione:**
+         1.  Scansionare tutti i file di frontend (HTML, JSX, Vue components, ecc.) e i file di configurazione del testo.
+         2.  **Tradurre in Italiano:** Tutti i testi visibili all'utente (etichette dei campi, titoli delle schermate, testo dei pulsanti, messaggi di errore/successo, placeholder, ecc.) che sono ancora in inglese devono essere tradotti in italiano corretto e naturale.
+            *   Esempi: "Sign Up" -> "Registrati", "Login" -> "Accedi", "Dashboard" -> "Pannello di Controllo", "Generate Content" -> "Genera Contenuto", "Save" -> "Salva", "Settings" -> "Impostazioni", "My Account" -> "Il Mio Account", "Subscription" -> "Abbonamento", "Keywords" -> "Parole Chiave", "Target Audience" -> "Pubblico Target", "Tone of Voice" -> "Tono di Voce".
+         3.  **Sostituire "Nicchia" (e sue varianti):**
+            *   Ogni occorrenza di "Nicchia", "Profilo Nicchia", "Niche Profile", "Definisci la tua Nicchia", ecc., deve essere sostituita con un termine che includa "[NOME TUA AZIENDA/PROGETTO]".
+            *   Esempi:
+               *   "Profilo Nicchia" -> "Profilo [NOME TUA AZIENDA/PROGETTO]"
+               *   "Definisci la tua Nicchia" -> "Definisci il tuo Progetto [NOME TUA AZIENDA/PROGETTO]"
+               *   "I Miei Profili Nicchia" -> "I Miei Progetti [NOME TUA AZIENDA/PROGETTO]"
+               *   "Scegli il Profilo Nicchia" -> "Scegli il Progetto [NOME TUA AZIENDA/PROGETTO]"
+            *   **IMPORTANTE:** Valutare se il termine "[NOME TUA AZIENDA/PROGETTO]" da solo ha senso o se serve una parola aggiuntiva come "Progetto", "Area", "Cliente" a seconda del contesto. Ad esempio, "Profilo Cliente [NOME TUA AZIENDA/PROGETTO]". *Si prega di usare il buonsenso per la migliore resa linguistica.*
+
+**2. CORREZIONE FUNZIONALITÀ: GENERAZIONE POST SOCIAL**
+
+   *   **Obiettivo:** Risolvere il problema che impedisce la corretta generazione dei post social.
+   *   **Problema Attuale Descritto (fornire più dettagli se possibile):** [SPIEGA QUI DETTAGLIATAMENTE COSA NON FUNZIONA. Esempio: "Quando clicco sul pulsante 'GENERA BOZZA POST' nella schermata 'Dettagli per Post Social', non succede nulla." oppure "Appare un messaggio di errore '[MESSAGGIO DI ERRORE]'." oppure "La chiamata all'API LLM sembra fallire." oppure "I dati inseriti dall'utente non vengono inviati correttamente."]
+   *   **Azioni Richieste (da investigare e implementare):**
+      1.  **Verificare il Flusso Dati Frontend:**
+         *   File/Componente coinvolto: `[NomeComponenteFormPostSocial.js/.vue/.html]`
+         *   Assicurarsi che i dati inseriti dall'utente nei campi "Argomento principale del post", "Call to Action", "Hashtag" vengano correttamente raccolti e inviati al backend quando si preme il pulsante "GENERA BOZZA POST".
+         *   Controllare la console del browser per eventuali errori JavaScript al momento del click.
+      2.  **Verificare la Chiamata API al Backend:**
+         *   File/Funzione frontend che effettua la chiamata: `[NomeFunzioneChiamataAPIFrontend.js]`
+         *   Assicurarsi che la richiesta API al backend (endpoint per la generazione di post) venga formattata correttamente, includendo tutti i dati necessari (input utente, ID del "Profilo [NOME TUA AZIENDA/PROGETTO]", tipo di contenuto).
+         *   Controllare la tab "Network" negli strumenti per sviluppatori del browser per vedere lo stato della richiesta e la risposta.
+      3.  **Verificare la Logica Backend:**
+         *   File/Funzione backend che gestisce la generazione: `[NomeHandlerBackendGenerazionePost.py/.js/.java]`
+         *   Debuggare la funzione che riceve la richiesta dal frontend.
+         *   Verificare che i dati dal frontend vengano ricevuti e processati correttamente.
+         *   **Cruciale: Verificare l'integrazione con l'API dell'LLM (es. OpenAI):**
+            *   Il prompt inviato all'LLM è costruito correttamente con i dati dell'utente e le specifiche del "Profilo [NOME TUA AZIENDA/PROGETTO]"?
+            *   La chiave API dell'LLM è corretta e valida?
+            *   Ci sono errori restituiti dall'API dell'LLM? Loggare la risposta completa dell'LLM.
+            *   Il modello LLM specificato è corretto (es. `gpt-3.5-turbo`, `gpt-4`)?
+         *   Assicurarsi che la risposta dell'LLM venga gestita correttamente e inviata di nuovo al frontend.
+      4.  **Gestione Errori:**
+         *   Implementare (o migliorare) la gestione degli errori sia nel frontend che nel backend. L'utente dovrebbe ricevere un messaggio chiaro se la generazione del post fallisce (es. "Impossibile generare il post. Riprova più tardi." o un errore più specifico se possibile).
+         *   Loggare errori dettagliati nel backend per facilitare il debug futuro.
+
+**RIEPILOGO TASK:**
+1.  Cambiare font globale a uno più elegante (es. Montserrat).
+2.  Tradurre UI in italiano.
+3.  Sostituire "Nicchia" con "[NOME TUA AZIENDA/PROGETTO]" (o sue varianti contestuali).
+4.  Debuggare e correggere la funzionalità di generazione dei post social.
+
+Si prega di testare attentamente tutte le modifiche prima di considerarle completate.
+Grazie!

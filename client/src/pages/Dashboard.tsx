@@ -51,15 +51,15 @@ export default function Dashboard() {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900 mb-2">I Miei Profili Nicchia</h1>
-            <p className="text-slate-600">Gestisci i tuoi profili e crea contenuti personalizzati</p>
+            <h1 className="text-3xl font-bold text-slate-900 mb-2">I Miei Progetti</h1>
+            <p className="text-slate-600">Gestisci i tuoi progetti e crea contenuti personalizzati</p>
           </div>
           <Button 
             onClick={handleCreateProfile}
             className="bg-primary hover:bg-primary/90 flex items-center"
           >
             <Plus className="w-4 h-4 mr-2" />
-            CREA NUOVO PROFILO NICCHIA
+            CREA NUOVO PROGETTO
           </Button>
         </div>
 
@@ -81,15 +81,15 @@ export default function Dashboard() {
             <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
               <UserPlus className="text-slate-400 text-3xl w-12 h-12" />
             </div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-2">Nessun Profilo Nicchia</h3>
+            <h3 className="text-xl font-semibold text-slate-900 mb-2">Nessun Progetto</h3>
             <p className="text-slate-600 mb-6">
-              Non hai ancora creato nessun profilo nicchia. Clicca sul pulsante qui sopra per iniziare.
+              Non hai ancora creato nessun progetto. Clicca sul pulsante qui sopra per iniziare.
             </p>
             <Button 
               onClick={handleCreateProfile}
               className="bg-primary hover:bg-primary/90"
             >
-              + CREA IL TUO PRIMO PROFILO
+              + CREA IL TUO PRIMO PROGETTO
             </Button>
           </div>
         )}

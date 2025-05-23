@@ -41,7 +41,7 @@ export default function NicheProfileForm({
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
         <CardTitle className="text-2xl text-center">
-          {title || (profile ? `Modifica Profilo: ${profile.name}` : "Crea Nuovo Profilo Nicchia")}
+          {title || (profile ? `Modifica Progetto: ${profile.name}` : "Crea Nuovo Progetto")}
         </CardTitle>
       </CardHeader>
       <CardContent>
