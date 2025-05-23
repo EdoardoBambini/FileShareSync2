@@ -363,34 +363,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
         await storage.updateUserSubscription(userId, user.subscriptionPlan || 'free', customerId);
       }
 
-      // Create subscription
-      const subscription = await stripe.subscriptions.create({
+      // Create a simple payment intent for subscription setup
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: 499, // €4.99
+        currency: 'eur',
         customer: customerId,
-        items: [{
-          price_data: {
-            currency: 'eur',
-            product_data: {
-              name: 'NicheScribe AI Premium',
-              description: 'Generazioni illimitate e contenuti completi',
-            },
-            unit_amount: 499, // €4.99/month
-            recurring: {
-              interval: 'month',
-            },
-          },
-        }],
-        payment_behavior: 'default_incomplete',
-        payment_settings: { save_default_payment_method: 'on_subscription' },
-        expand: ['latest_invoice.payment_intent'],
+        setup_future_usage: 'off_session',
+        description: 'NicheScribe AI Premium - Abbonamento Mensile',
+        metadata: {
+          userId: userId,
+          type: 'subscription'
+        }
       });
 
-      // Update user subscription info
-      await storage.updateUserSubscription(userId, 'premium', customerId, subscription.id);
+      // Update user subscription info (we'll activate after payment)
+      await storage.updateUserSubscription(userId, 'premium', customerId, `temp_${paymentIntent.id}`);
 
       res.json({
-        subscriptionId: subscription.id,
-        clientSecret: subscription.latest_invoice?.payment_intent?.client_secret,
-        status: subscription.status,
+        clientSecret: paymentIntent.client_secret,
+        paymentIntentId: paymentIntent.id,
+        status: 'requires_payment'
       });
     } catch (error: any) {
       console.error("Error creating subscription:", error);
@@ -436,6 +428,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Confirm payment and activate premium
+  app.post('/api/confirm-payment', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { paymentIntentId } = req.body;
+
+      // Verify payment with Stripe
+      const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+      
+      if (paymentIntent.status === 'succeeded') {
+        // Activate premium subscription
+        await storage.updateUserSubscription(userId, 'premium', paymentIntent.customer as string, paymentIntentId);
+        
+        res.json({ 
+          message: "Pagamento confermato! Benvenuto in Premium!",
+          subscriptionPlan: 'premium'
+        });
+      } else {
+        res.status(400).json({ message: "Pagamento non completato" });
+      }
+    } catch (error: any) {
+      console.error("Error confirming payment:", error);
+      res.status(500).json({ message: "Errore nella conferma del pagamento: " + error.message });
+    }
+  });
+
   // Cancel subscription
   app.post('/api/cancel-subscription', isAuthenticated, async (req: any, res) => {
     try {
@@ -446,9 +464,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Nessun abbonamento attivo trovato" });
       }
 
-      await stripe.subscriptions.cancel(user.stripeSubscriptionId);
       await storage.updateUserSubscription(userId, 'free');
-
       res.json({ message: "Abbonamento cancellato con successo" });
     } catch (error: any) {
       console.error("Error canceling subscription:", error);

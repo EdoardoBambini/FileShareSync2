@@ -17,12 +17,34 @@ if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
 }
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
-const SubscribeForm = ({ clientSecret }: { clientSecret: string }) => {
+const SubscribeForm = ({ clientSecret, paymentIntentId }: { clientSecret: string; paymentIntentId: string }) => {
   const stripe = useStripe();
   const elements = useElements();
   const { toast } = useToast();
   const [, setLocation] = useLocation();
   const [isProcessing, setIsProcessing] = useState(false);
+
+  const confirmPaymentMutation = useMutation({
+    mutationFn: async (paymentIntentId: string) => {
+      const response = await apiRequest("POST", "/api/confirm-payment", { paymentIntentId });
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Pagamento Completato!",
+        description: "Benvenuto in NicheScribe Premium!",
+        variant: "default",
+      });
+      setLocation("/dashboard");
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Errore",
+        description: error.message || "Errore nella conferma del pagamento",
+        variant: "destructive",
+      });
+    },
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,11 +55,12 @@ const SubscribeForm = ({ clientSecret }: { clientSecret: string }) => {
       return;
     }
 
-    const { error } = await stripe.confirmPayment({
+    const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
       confirmParams: {
         return_url: `${window.location.origin}/dashboard`,
       },
+      redirect: 'if_required'
     });
 
     if (error) {
@@ -46,15 +69,12 @@ const SubscribeForm = ({ clientSecret }: { clientSecret: string }) => {
         description: error.message,
         variant: "destructive",
       });
-    } else {
-      toast({
-        title: "Pagamento Completato!",
-        description: "Benvenuto in NicheScribe Premium!",
-        variant: "default",
-      });
-      setLocation("/dashboard");
+      setIsProcessing(false);
+    } else if (paymentIntent?.status === 'succeeded') {
+      // Confirm payment on backend
+      confirmPaymentMutation.mutate(paymentIntentId);
+      setIsProcessing(false);
     }
-    setIsProcessing(false);
   };
 
   return (
@@ -78,6 +98,7 @@ const SubscribeForm = ({ clientSecret }: { clientSecret: string }) => {
 export default function Subscribe() {
   const [, setLocation] = useLocation();
   const [clientSecret, setClientSecret] = useState("");
+  const [paymentIntentId, setPaymentIntentId] = useState("");
   const { toast } = useToast();
 
   const createSubscriptionMutation = useMutation({
@@ -86,8 +107,9 @@ export default function Subscribe() {
       return response.json();
     },
     onSuccess: (data) => {
-      if (data.clientSecret) {
+      if (data.clientSecret && data.paymentIntentId) {
         setClientSecret(data.clientSecret);
+        setPaymentIntentId(data.paymentIntentId);
       } else if (data.message === "Abbonamento già attivo") {
         toast({
           title: "Abbonamento Attivo",
@@ -253,7 +275,7 @@ export default function Subscribe() {
           </CardHeader>
           <CardContent>
             <Elements stripe={stripePromise} options={{ clientSecret }}>
-              <SubscribeForm clientSecret={clientSecret} />
+              <SubscribeForm clientSecret={clientSecret} paymentIntentId={paymentIntentId} />
             </Elements>
           </CardContent>
         </Card>
