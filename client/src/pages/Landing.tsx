@@ -20,18 +20,23 @@ export default function Landing() {
           <CardContent className="pt-8 pb-8 px-8">
             <div className="text-center">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                Benvenuto in NicheScribe AI
+                🚀 Accedi al tuo account
               </h2>
               <p className="text-slate-600 mb-6">
-                La piattaforma AI per creare contenuti mirati per social media, 
-                descrizioni prodotti e marketing personalizzato.
+                Crea contenuti professionali per social media, prodotti e marketing 
+                con l'intelligenza artificiale più avanzata.
               </p>
               
-              <Button asChild className="w-full bg-primary hover:bg-primary/90">
+              <Button asChild className="w-full bg-primary hover:bg-primary/90 text-lg py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200">
                 <a href="/api/login">
-                  ACCEDI PER INIZIARE
+                  ✨ ACCEDI CON REPLIT
                 </a>
               </Button>
+              
+              <p className="text-xs text-slate-500 mt-4 leading-relaxed">
+                🔒 <strong>Login sicuro:</strong> Verrai reindirizzato al sistema di autenticazione Replit. 
+                I tuoi dati sono protetti e crittografati.
+              </p>
               
               <div className="mt-6">
                 <div className="relative">
@@ -43,18 +48,26 @@ export default function Landing() {
                   </div>
                 </div>
                 
-                <div className="mt-4 space-y-2 text-sm text-slate-600">
+                <div className="mt-4 space-y-3 text-sm text-slate-600">
                   <div className="flex items-center justify-center">
-                    • Generazione contenuti AI personalizzati
+                    <span className="text-green-500 mr-2">✅</span>
+                    <strong>3 generazioni gratuite</strong> per iniziare
                   </div>
                   <div className="flex items-center justify-center">
-                    • Progetti multipli per target diversi
+                    <span className="text-blue-500 mr-2">🎯</span>
+                    Suggerimenti AI intelligenti
                   </div>
                   <div className="flex items-center justify-center">
-                    • Post social e descrizioni prodotti
+                    <span className="text-purple-500 mr-2">📱</span>
+                    Post Facebook, Instagram, blog e prodotti
                   </div>
                   <div className="flex items-center justify-center">
-                    • Editor integrato per personalizzazioni
+                    <span className="text-orange-500 mr-2">👥</span>
+                    Gestione progetti multipli
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <span className="text-pink-500 mr-2">✨</span>
+                    <strong>Premium €4.99/mese</strong> - contenuti illimitati
                   </div>
                 </div>
               </div>
