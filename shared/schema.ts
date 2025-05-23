@@ -33,6 +33,10 @@ export const users = pgTable("users", {
   lastName: varchar("last_name"),
   profileImageUrl: varchar("profile_image_url"),
   company: varchar("company"),
+  subscriptionPlan: varchar("subscription_plan").default("free"), // free, premium
+  creditsRemaining: integer("credits_remaining").default(3), // crediti per utenti free
+  stripeCustomerId: varchar("stripe_customer_id"),
+  stripeSubscriptionId: varchar("stripe_subscription_id"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
