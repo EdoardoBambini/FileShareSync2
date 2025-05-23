@@ -193,7 +193,7 @@ export default function ContentSuggestion() {
           </CardContent>
         </Card>
 
-        {suggestions.length > 0 && (
+        {suggestions && suggestions.length > 0 && (
           <div className="space-y-6">
             <div className="text-center">
               <h2 className="text-2xl font-bold text-foreground mb-2">Suggerimenti Personalizzati</h2>
