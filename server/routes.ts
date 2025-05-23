@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
-import { generateContent, generateContentVariation } from "./openai";
+import { generateContent, generateContentVariation, suggestContentTypes } from "./openai";
 import { insertNicheProfileSchema, updateNicheProfileSchema, insertGeneratedContentSchema } from "@shared/schema";
 import { z } from "zod";
 
@@ -134,6 +134,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error deleting niche profile:", error);
       res.status(500).json({ message: "Failed to delete niche profile" });
+    }
+  });
+
+  // Content suggestion route
+  app.post('/api/suggest-content-types', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { nicheProfileId, objective } = req.body;
+      
+      // Get niche profile
+      const nicheProfile = await storage.getNicheProfile(nicheProfileId);
+      if (!nicheProfile || nicheProfile.userId !== userId) {
+        return res.status(404).json({ message: "Progetto non trovato" });
+      }
+      
+      // Get AI suggestions
+      const suggestions = await suggestContentTypes(objective, nicheProfile);
+      
+      res.json(suggestions);
+    } catch (error) {
+      console.error("Error getting content suggestions:", error);
+      res.status(500).json({ message: "Failed to get suggestions: " + (error as Error).message });
     }
   });
 

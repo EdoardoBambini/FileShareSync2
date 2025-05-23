@@ -45,16 +45,16 @@ export default function Landing() {
                 
                 <div className="mt-4 space-y-2 text-sm text-slate-600">
                   <div className="flex items-center justify-center">
-                    ✨ Generazione contenuti AI personalizzati
+                    • Generazione contenuti AI personalizzati
                   </div>
                   <div className="flex items-center justify-center">
-                    🎯 Profili nicchia multipli
+                    • Progetti multipli per target diversi
                   </div>
                   <div className="flex items-center justify-center">
-                    📱 Post social e descrizioni prodotti
+                    • Post social e descrizioni prodotti
                   </div>
                   <div className="flex items-center justify-center">
-                    📝 Editor integrato per personalizzazioni
+                    • Editor integrato per personalizzazioni
                   </div>
                 </div>
               </div>

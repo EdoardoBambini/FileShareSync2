@@ -133,6 +133,66 @@ Lo script deve:
   }
 }
 
+export async function suggestContentTypes(objective: string, nicheProfile: any): Promise<any> {
+  const systemPrompt = `Sei un esperto strategist di content marketing. Analizza l'obiettivo fornito dall'utente e suggerisci i 2-3 tipi di contenuto più efficaci per raggiungerlo.
+
+Profilo del progetto:
+- Nome: ${nicheProfile.name}
+- Pubblico target: ${nicheProfile.targetAudience}
+- Obiettivo generale: ${nicheProfile.contentGoal}
+- Tono di voce: ${nicheProfile.toneOfVoice}
+${nicheProfile.keywords ? `- Keywords: ${nicheProfile.keywords}` : ""}
+
+Tipi disponibili: facebook, instagram, product, blog, video
+
+Per ogni suggerimento, fornisci:
+1. Il tipo (uno dei tipi disponibili)
+2. Il titolo descrittivo
+3. Una breve descrizione di cosa includerebbe
+4. La ragione specifica per cui questo formato è ideale per l'obiettivo
+
+Rispondi in formato JSON con questa struttura:
+{
+  "suggestions": [
+    {
+      "type": "instagram",
+      "title": "Post Instagram",
+      "description": "Caption coinvolgente con call-to-action",
+      "reason": "Perfetto per generare engagement e raggiungere un pubblico giovane"
+    }
+  ]
+}`;
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: `Obiettivo/argomento: ${objective}` }
+      ],
+      response_format: { type: "json_object" },
+      temperature: 0.7,
+      max_tokens: 800,
+    });
+
+    const generatedText = response.choices[0].message.content;
+    if (!generatedText) {
+      throw new Error("Nessun suggerimento generato dall'AI");
+    }
+
+    return JSON.parse(generatedText);
+  } catch (error: any) {
+    console.error("Errore nella generazione dei suggerimenti:", error);
+    if (error.status === 429 || error.code === 'insufficient_quota') {
+      throw new Error("Quota API OpenAI superata. Verifica il tuo piano di abbonamento su https://platform.openai.com e aggiungi crediti al tuo account.");
+    }
+    if (error.status === 401) {
+      throw new Error("Chiave API OpenAI non valida. Verifica le tue credenziali su https://platform.openai.com");
+    }
+    throw new Error("Errore durante l'analisi dell'obiettivo. Riprova più tardi.");
+  }
+}
+
 export async function generateContentVariation(originalContent: string, nicheProfile: any): Promise<string> {
   const systemPrompt = `Sei un esperto copywriter. Crea una variazione del contenuto fornito mantenendo:
 - Lo stesso messaggio principale
