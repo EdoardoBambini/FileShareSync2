@@ -291,12 +291,11 @@ export default function ContentOutput() {
                   </div>
                 </div>
                 <Button
-                  onClick={() => createSubscriptionMutation.mutate()}
-                  disabled={createSubscriptionMutation.isPending}
+                  onClick={() => setLocation("/subscribe")}
                   className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-medium px-6"
                 >
                   <Crown className="w-4 h-4 mr-2" />
-                  {createSubscriptionMutation.isPending ? "Attivazione..." : "Passa a Premium €4.99/mese"}
+                  Passa a Premium €4.99/mese
                 </Button>
               </div>
             </CardContent>
@@ -323,7 +322,7 @@ export default function ContentOutput() {
                 </div>
                 {creditsRemaining <= 1 && (
                   <Button
-                    onClick={() => createSubscriptionMutation.mutate()}
+                    onClick={() => setLocation("/subscribe")}
                     size="sm"
                     className="bg-blue-600 hover:bg-blue-700 text-white"
                   >

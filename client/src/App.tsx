@@ -11,6 +11,7 @@ import ContentTypeSelection from "@/pages/ContentTypeSelection";
 import ContentInput from "@/pages/ContentInput";
 import ContentOutput from "@/pages/ContentOutput";
 import ContentSuggestion from "@/pages/ContentSuggestion";
+import Subscribe from "@/pages/Subscribe";
 import Account from "@/pages/Account";
 import NotFound from "@/pages/not-found";
 
@@ -29,6 +30,7 @@ function Router() {
           <Route path="/content-type" component={ContentTypeSelection} />
           <Route path="/content-input" component={ContentInput} />
           <Route path="/content-output" component={ContentOutput} />
+          <Route path="/subscribe" component={Subscribe} />
           <Route path="/account" component={Account} />
         </>
       )}
