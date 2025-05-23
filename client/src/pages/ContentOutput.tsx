@@ -1,6 +1,6 @@
 import { useLocation } from "wouter";
 import { useEffect, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { ArrowLeft, Copy, Download, RefreshCw, Save, ThumbsUp, ThumbsDown, Check, Crown, Zap } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 import type { NicheProfile, GeneratedContent } from "@shared/schema";
 
 export default function ContentOutput() {
@@ -23,6 +24,7 @@ export default function ContentOutput() {
   // Usa i crediti e piano dal database tramite useAuth
   const { user } = useAuth();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   // Funzione per generare contenuto dai suggerimenti AI
   const generateContentFromAI = (profile: NicheProfile, contentType: string, objective: string) => {
@@ -48,9 +50,10 @@ export default function ContentOutput() {
       setEditedText(data.generatedText);
       setIsContentLimited(data.isContentLimited || false);
       setUpgradeMessage(data.upgradeMessage || null);
-      setCreditsRemaining(data.creditsRemaining || 0);
-      setSubscriptionPlan(data.subscriptionPlan || "free");
       sessionStorage.setItem("generatedContent", JSON.stringify(data));
+      
+      // Refresh user data to get updated credits from database
+      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
       
       if (data.upgradeMessage) {
         toast({
