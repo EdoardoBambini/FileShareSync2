@@ -325,53 +325,54 @@ export default function ContentInput() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       <Navigation />
       
       {/* Main Content */}
-      <div className="max-w-3xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <Button
           variant="ghost"
           onClick={handleGoBack}
-          className="mb-6 text-slate-600 hover:text-slate-900"
+          className="mb-6 text-slate-600 hover:text-slate-900 transition-colors"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Indietro
         </Button>
 
-        <Card className="shadow-lg">
-          <CardHeader>
+        <Card className="shadow-xl border-0 bg-white/95 backdrop-blur-sm">
+          <CardHeader className="pb-6">
             <div className="text-center">
-              <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${typeInfo.color}`}>
-                <IconComponent className="w-8 h-8" />
+              <div className={`w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg ${typeInfo.color}`}>
+                <IconComponent className="w-10 h-10" />
               </div>
-              <CardTitle className="text-2xl mb-2">{typeInfo.title}</CardTitle>
-              <p className="text-slate-600">{typeInfo.description}</p>
-              <div className="text-sm text-slate-500 mt-2">
-                <span className="font-medium">{selectedProfile.name}</span> • {typeInfo.title}
+              <CardTitle className="text-2xl sm:text-3xl font-bold mb-3 leading-tight">{typeInfo.title}</CardTitle>
+              <p className="text-slate-600 text-base sm:text-lg leading-relaxed">{typeInfo.description}</p>
+              <div className="text-sm text-slate-500 mt-4 bg-slate-50 inline-block px-4 py-2 rounded-lg">
+                <span className="font-semibold text-primary">{selectedProfile.name}</span>
               </div>
             </div>
           </CardHeader>
           
-          <CardContent>
+          <CardContent className="px-6 sm:px-8">
             <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
               {renderFormFields()}
               
-              <div className="flex justify-center space-x-4 pt-4">
+              <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 pt-6">
                 <Button 
                   type="button" 
                   variant="outline"
                   onClick={handleGoBack}
                   disabled={generateMutation.isPending}
+                  className="w-full sm:w-auto order-2 sm:order-1"
                 >
                   Indietro
                 </Button>
                 <Button 
                   type="submit"
                   disabled={generateMutation.isPending}
-                  className="bg-primary hover:bg-primary/90"
+                  className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 text-white font-semibold w-full sm:w-auto order-1 sm:order-2 shadow-lg"
                 >
-                  {generateMutation.isPending ? "Generazione..." : "GENERA BOZZA"}
+                  {generateMutation.isPending ? "Generazione..." : "GENERA CONTENUTO"}
                 </Button>
               </div>
             </form>

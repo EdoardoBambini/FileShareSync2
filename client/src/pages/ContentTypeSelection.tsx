@@ -84,44 +84,50 @@ export default function ContentTypeSelection() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       <Navigation />
       
       {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <Button
           variant="ghost"
           onClick={handleGoBack}
-          className="mb-6 text-slate-600 hover:text-slate-900"
+          className="mb-6 text-slate-600 hover:text-slate-900 transition-colors"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Torna alla Dashboard
         </Button>
 
-        <div className="text-center mb-12">
-          <div className="text-sm text-slate-600 mb-2">
-            Progetto Attivo: <span className="font-medium text-slate-900">{selectedProfile.name}</span>
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="text-sm text-slate-600 mb-3 font-medium">
+            Progetto Attivo: <span className="text-primary font-semibold">{selectedProfile.name}</span>
           </div>
-          <h1 className="text-3xl font-bold text-slate-900 mb-4">Cosa vuoi creare oggi?</h1>
-          <p className="text-lg text-slate-600">Scegli il tipo di contenuto che desideri generare</p>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-4 leading-tight">
+            Cosa vuoi creare oggi?
+          </h1>
+          <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+            Scegli il tipo di contenuto che desideri generare con l'intelligenza artificiale
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {contentTypes.map((type) => {
             const IconComponent = type.icon;
             
             return (
               <Card 
                 key={type.id}
-                className="hover:shadow-xl hover:border-primary/20 transition-all cursor-pointer group"
+                className="hover:shadow-xl hover:border-primary/20 transition-all duration-300 cursor-pointer group transform hover:-translate-y-1"
                 onClick={() => handleContentTypeSelect(type.id)}
               >
-                <CardContent className="p-6 text-center">
-                  <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 transition-colors ${type.color}`}>
-                    <IconComponent className="w-8 h-8" />
+                <CardContent className="p-6 text-center h-full flex flex-col justify-between">
+                  <div className="flex flex-col items-center">
+                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 transition-colors shadow-sm ${type.color}`}>
+                      <IconComponent className="w-8 h-8" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-slate-900 mb-3 leading-tight">{type.title}</h3>
                   </div>
-                  <h3 className="text-lg font-semibold text-slate-900 mb-2">{type.title}</h3>
-                  <p className="text-slate-600 text-sm">{type.description}</p>
+                  <p className="text-slate-600 text-sm leading-relaxed">{type.description}</p>
                 </CardContent>
               </Card>
             );
