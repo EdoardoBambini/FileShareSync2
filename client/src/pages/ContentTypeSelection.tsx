@@ -39,17 +39,10 @@ export default function ContentTypeSelection() {
     setLocation("/");
   };
 
+  // Non mostrare la pagina se non c'è il profilo selezionato
+  // L'useEffect sopra già gestisce il redirect alla dashboard
   if (!selectedProfile) {
-    return (
-      <div className="min-h-screen bg-slate-50">
-        <Navigation />
-        <div className="max-w-4xl mx-auto px-4 py-8">
-          <div className="flex justify-center items-center h-64">
-            <div className="text-slate-600">Caricamento...</div>
-          </div>
-        </div>
-      </div>
-    );
+    return null;
   }
 
   const contentTypes = [
