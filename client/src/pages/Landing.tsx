@@ -19,23 +19,23 @@ export default function Landing() {
         <Card className="shadow-lg">
           <CardContent className="pt-8 pb-8 px-8">
             <div className="text-center">
-              <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                🚀 Accedi al tuo account
+              <h2 className="text-2xl font-bold text-slate-900 mb-3">
+                Accedi al tuo account
               </h2>
-              <p className="text-slate-600 mb-6">
+              <p className="text-slate-600 mb-8 leading-relaxed">
                 Crea contenuti professionali per social media, prodotti e marketing 
                 con l'intelligenza artificiale più avanzata.
               </p>
               
-              <Button asChild className="w-full bg-primary hover:bg-primary/90 text-lg py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200">
+              <Button asChild className="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-white text-lg py-4 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 font-semibold">
                 <a href="/api/login">
-                  ✨ ACCEDI CON REPLIT
+                  ACCEDI CON REPLIT
                 </a>
               </Button>
               
-              <p className="text-xs text-slate-500 mt-4 leading-relaxed">
-                🔒 <strong>Login sicuro:</strong> Verrai reindirizzato al sistema di autenticazione Replit. 
-                I tuoi dati sono protetti e crittografati.
+              <p className="text-xs text-slate-500 mt-6 leading-relaxed px-4">
+                <span className="font-medium">Login sicuro:</span> Verrai reindirizzato al sistema di autenticazione Replit. 
+                I tuoi dati sono protetti con crittografia avanzata.
               </p>
               
               <div className="mt-6">
@@ -48,26 +48,32 @@ export default function Landing() {
                   </div>
                 </div>
                 
-                <div className="mt-4 space-y-3 text-sm text-slate-600">
-                  <div className="flex items-center justify-center">
-                    <span className="text-green-500 mr-2">✅</span>
-                    <strong>3 generazioni gratuite</strong> per iniziare
+                <div className="mt-6 space-y-4">
+                  <div className="flex items-center text-sm text-slate-700">
+                    <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                    <div>
+                      <span className="font-semibold">3 generazioni gratuite</span>
+                      <span className="text-slate-500 ml-1">per iniziare</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-center">
-                    <span className="text-blue-500 mr-2">🎯</span>
-                    Suggerimenti AI intelligenti
+                  <div className="flex items-center text-sm text-slate-700">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
+                    <div>Suggerimenti AI intelligenti</div>
                   </div>
-                  <div className="flex items-center justify-center">
-                    <span className="text-purple-500 mr-2">📱</span>
-                    Post Facebook, Instagram, blog e prodotti
+                  <div className="flex items-center text-sm text-slate-700">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full mr-3"></div>
+                    <div>Post Facebook, Instagram, blog e prodotti</div>
                   </div>
-                  <div className="flex items-center justify-center">
-                    <span className="text-orange-500 mr-2">👥</span>
-                    Gestione progetti multipli
+                  <div className="flex items-center text-sm text-slate-700">
+                    <div className="w-2 h-2 bg-orange-500 rounded-full mr-3"></div>
+                    <div>Gestione progetti multipli</div>
                   </div>
-                  <div className="flex items-center justify-center">
-                    <span className="text-pink-500 mr-2">✨</span>
-                    <strong>Premium €4.99/mese</strong> - contenuti illimitati
+                  <div className="flex items-center text-sm text-slate-700">
+                    <div className="w-2 h-2 bg-indigo-500 rounded-full mr-3"></div>
+                    <div>
+                      <span className="font-semibold">Premium €4.99/mese</span>
+                      <span className="text-slate-500 ml-1">- contenuti illimitati</span>
+                    </div>
                   </div>
                 </div>
               </div>

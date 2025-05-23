@@ -42,18 +42,18 @@ export default function AdBanner({ size = "banner", position = "top" }: AdBanner
     
     const adContents = [
       {
-        title: "🚀 Contenuti Illimitati",
-        subtitle: "Passa a Premium e genera tutto quello che vuoi!",
+        title: "Contenuti Illimitati",
+        subtitle: "Passa a Premium e genera tutto quello che vuoi senza limitazioni",
         cta: "Scopri Premium"
       },
       {
-        title: "📸 Suggerimenti Foto & Video",
-        subtitle: "Solo con Premium: idee complete con immagini!",
+        title: "Suggerimenti Foto & Video",
+        subtitle: "Solo con Premium: idee complete con suggerimenti visivi avanzati",
         cta: "Attiva Premium"
       },
       {
-        title: "⚡ Niente Più Limitazioni",
-        subtitle: "Premium: genera contenuti senza limiti",
+        title: "Generazione Avanzata",
+        subtitle: "Premium: contenuti professionali senza alcun limite",
         cta: "Upgrade Ora"
       }
     ];
@@ -71,7 +71,7 @@ export default function AdBanner({ size = "banner", position = "top" }: AdBanner
         <div className="h-full flex items-center justify-between p-3">
           <div className="flex-1">
             <div className="font-semibold text-sm text-foreground flex items-center">
-              <Crown className="w-4 h-4 mr-1 text-primary" />
+              <Crown className="w-4 h-4 mr-2 text-primary" />
               {randomAd.title}
             </div>
             <div className="text-xs text-muted-foreground mt-1">

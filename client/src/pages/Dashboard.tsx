@@ -47,21 +47,22 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       <Navigation />
       
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-slate-900 mb-2">I Miei Progetti</h1>
-            <p className="text-slate-600">Gestisci i tuoi progetti e crea contenuti personalizzati</p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        {/* Header - Mobile Responsive */}
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-8 space-y-4 sm:space-y-0">
+          <div className="text-center sm:text-left">
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">I Miei Progetti</h1>
+            <p className="text-slate-600 text-sm sm:text-base">Gestisci i tuoi progetti e crea contenuti personalizzati con AI</p>
           </div>
           <Button 
             onClick={handleCreateProfile}
-            className="bg-primary hover:bg-primary/90 flex items-center"
+            className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-white font-semibold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center w-full sm:w-auto"
           >
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-5 h-5 mr-2" />
             CREA NUOVO PROGETTO
           </Button>
         </div>
@@ -69,9 +70,9 @@ export default function Dashboard() {
         {/* Banner pubblicitario top per utenti gratuiti */}
         <AdBanner size="leaderboard" position="top" />
 
-        {/* Profiles Grid */}
+        {/* Profiles Grid - Super responsive */}
         {profiles.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
             {profiles.map((profile: NicheProfile) => (
               <NicheProfileCard
                 key={profile.id}
@@ -82,20 +83,20 @@ export default function Dashboard() {
             ))}
           </div>
         ) : (
-          /* Empty State */
-          <div className="text-center py-12">
-            <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <UserPlus className="text-slate-400 text-3xl w-12 h-12" />
+          /* Empty State - Mobile optimized */
+          <div className="text-center py-16 px-4">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
+              <UserPlus className="text-slate-400 w-10 h-10 sm:w-12 sm:h-12" />
             </div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-2">Nessun Progetto</h3>
-            <p className="text-slate-600 mb-6">
-              Non hai ancora creato nessun progetto. Clicca sul pulsante qui sopra per iniziare.
+            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3">Inizia il tuo primo progetto</h3>
+            <p className="text-slate-600 mb-8 max-w-md mx-auto leading-relaxed">
+              Crea il tuo primo progetto per iniziare a generare contenuti personalizzati con l'intelligenza artificiale.
             </p>
             <Button 
               onClick={handleCreateProfile}
-              className="bg-primary hover:bg-primary/90"
+              className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-white font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              + CREA IL TUO PRIMO PROGETTO
+              CREA IL TUO PRIMO PROGETTO
             </Button>
           </div>
         )}
