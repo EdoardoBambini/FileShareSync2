@@ -50,11 +50,21 @@ export default function ContentSuggestion() {
       return response.json();
     },
     onSuccess: (data) => {
-      const mappedSuggestions = data.suggestions.map((suggestion: any) => ({
-        ...suggestion,
-        icon: getIconForType(suggestion.type),
-      }));
-      setSuggestions(mappedSuggestions);
+      console.log("Dati ricevuti:", data);
+      if (data && data.suggestions) {
+        const mappedSuggestions = data.suggestions.map((suggestion: any) => ({
+          ...suggestion,
+          icon: getIconForType(suggestion.type),
+        }));
+        setSuggestions(mappedSuggestions);
+      } else {
+        console.error("Formato dati non valido:", data);
+        toast({
+          title: "Errore",
+          description: "Formato dati non valido ricevuto dal server.",
+          variant: "destructive",
+        });
+      }
     },
     onError: (error: any) => {
       toast({
