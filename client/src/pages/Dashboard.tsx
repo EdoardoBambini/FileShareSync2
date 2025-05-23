@@ -3,14 +3,17 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import Navigation from "@/components/Navigation";
 import NicheProfileCard from "@/components/NicheProfileCard";
+import AdBanner from "@/components/AdBanner";
 import { Button } from "@/components/ui/button";
 import { Plus, UserPlus } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import type { NicheProfile } from "@shared/schema";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Dashboard() {
   const [, setLocation] = useLocation();
   const queryClient = useQueryClient();
+  const { user } = useAuth();
   
   const { data: profiles = [], isLoading } = useQuery({
     queryKey: ["/api/niche-profiles"],
@@ -63,6 +66,9 @@ export default function Dashboard() {
           </Button>
         </div>
 
+        {/* Banner pubblicitario top per utenti gratuiti */}
+        <AdBanner size="leaderboard" position="top" />
+
         {/* Profiles Grid */}
         {profiles.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -93,6 +99,9 @@ export default function Dashboard() {
             </Button>
           </div>
         )}
+        
+        {/* Banner pubblicitario bottom per utenti gratuiti */}
+        <AdBanner size="banner" position="bottom" />
       </div>
     </div>
   );
