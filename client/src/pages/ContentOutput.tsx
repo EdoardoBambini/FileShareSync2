@@ -114,30 +114,53 @@ export default function ContentOutput() {
     const aiSuggested = sessionStorage.getItem("aiSuggested");
     const objective = sessionStorage.getItem("contentObjective");
     
-    if (profileData && typeData) {
-      setSelectedProfile(JSON.parse(profileData));
+    // Se mancano i dati essenziali, torna alla dashboard invece di not found
+    if (!profileData || !typeData) {
+      console.log("Dati mancanti, reindirizzamento alla dashboard...");
+      setLocation("/");
+      return;
+    }
+
+    try {
+      const profile = JSON.parse(profileData);
+      setSelectedProfile(profile);
       setContentType(typeData);
       
-      // Se viene dai suggerimenti AI, cancella il vecchio contenuto e genera nuovo
+      // Se viene dai suggerimenti AI, genera nuovo contenuto
       if (aiSuggested === "true") {
         console.log("Generazione da suggerimento AI...");
         sessionStorage.removeItem("generatedContent");
         sessionStorage.removeItem("aiSuggested");
         
         if (objective) {
-          generateContentFromAI(JSON.parse(profileData), typeData, objective);
+          generateContentFromAI(profile, typeData, objective);
+        } else {
+          // Se manca l'obiettivo, torna ai suggerimenti
+          setLocation("/content-suggestion");
         }
       }
-      // Se ha già il contenuto generato normale, lo mostra
+      // Se ha già il contenuto generato, lo mostra
       else if (contentData) {
-        const content = JSON.parse(contentData);
-        setGeneratedContent(content);
-        setEditedText(content.generatedText);
+        try {
+          const content = JSON.parse(contentData);
+          setGeneratedContent(content);
+          setEditedText(content.generatedText);
+          // Recupera anche i dati Premium se disponibili
+          setIsContentLimited(content.isContentLimited || false);
+          setUpgradeMessage(content.upgradeMessage || null);
+          setCreditsRemaining(content.creditsRemaining || 3);
+          setSubscriptionPlan(content.subscriptionPlan || "free");
+        } catch (error) {
+          console.error("Errore nel parsing del contenuto:", error);
+          setLocation("/content-type");
+        }
       }
       else {
-        setLocation("/");
+        // Se non ha contenuto, va alla selezione tipo contenuto
+        setLocation("/content-type");
       }
-    } else {
+    } catch (error) {
+      console.error("Errore nel parsing dei dati profilo:", error);
       setLocation("/");
     }
   }, [setLocation]);
