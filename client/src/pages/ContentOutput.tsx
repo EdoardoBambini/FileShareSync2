@@ -20,17 +20,69 @@ export default function ContentOutput() {
   const [copied, setCopied] = useState(false);
   const { toast } = useToast();
 
+  // Funzione per generare contenuto dai suggerimenti AI
+  const generateContentFromAI = (profile: NicheProfile, contentType: string, objective: string) => {
+    const inputData = {
+      objective: objective,
+      specificDetails: `Genera contenuto basato sull'obiettivo: ${objective}`
+    };
+
+    generateContentMutation.mutate({
+      nicheProfileId: profile.id,
+      contentType,
+      inputData
+    });
+  };
+
+  const generateContentMutation = useMutation({
+    mutationFn: async (data: { nicheProfileId: number; contentType: string; inputData: any }) => {
+      const response = await apiRequest("POST", "/api/generate-content", data);
+      return response.json();
+    },
+    onSuccess: (data) => {
+      setGeneratedContent(data);
+      setEditedText(data.generatedText);
+      sessionStorage.setItem("generatedContent", JSON.stringify(data));
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Errore",
+        description: error.message || "Errore durante la generazione del contenuto.",
+        variant: "destructive",
+      });
+    },
+  });
+
   useEffect(() => {
     const profileData = sessionStorage.getItem("selectedProfile");
     const typeData = sessionStorage.getItem("contentType");
     const contentData = sessionStorage.getItem("generatedContent");
+    const aiSuggested = sessionStorage.getItem("aiSuggested");
+    const objective = sessionStorage.getItem("contentObjective");
     
-    if (profileData && typeData && contentData) {
+    if (profileData && typeData) {
       setSelectedProfile(JSON.parse(profileData));
       setContentType(typeData);
-      const content = JSON.parse(contentData);
-      setGeneratedContent(content);
-      setEditedText(content.generatedText);
+      
+      // Se viene dai suggerimenti AI, cancella il vecchio contenuto e genera nuovo
+      if (aiSuggested === "true") {
+        console.log("Generazione da suggerimento AI...");
+        sessionStorage.removeItem("generatedContent");
+        sessionStorage.removeItem("aiSuggested");
+        
+        if (objective) {
+          generateContentFromAI(JSON.parse(profileData), typeData, objective);
+        }
+      }
+      // Se ha già il contenuto generato normale, lo mostra
+      else if (contentData) {
+        const content = JSON.parse(contentData);
+        setGeneratedContent(content);
+        setEditedText(content.generatedText);
+      }
+      else {
+        setLocation("/");
+      }
     } else {
       setLocation("/");
     }
@@ -69,14 +121,14 @@ export default function ContentOutput() {
     },
     onSuccess: () => {
       toast({
-        title: "Grazie per il feedback!",
-        description: "La tua valutazione ci aiuta a migliorare.",
+        title: "Feedback registrato!",
+        description: "Grazie per il tuo feedback, ci aiuta a migliorare.",
       });
     },
     onError: (error: any) => {
       toast({
         title: "Errore",
-        description: "Errore durante l'invio della valutazione.",
+        description: error.message || "Errore durante la registrazione del feedback.",
         variant: "destructive",
       });
     },
@@ -91,7 +143,7 @@ export default function ContentOutput() {
         description: "Il contenuto è stato copiato negli appunti.",
       });
       setTimeout(() => setCopied(false), 2000);
-    } catch (error) {
+    } catch (err) {
       toast({
         title: "Errore",
         description: "Impossibile copiare il contenuto.",
@@ -101,202 +153,210 @@ export default function ContentOutput() {
   };
 
   const handleDownload = () => {
-    const blob = new Blob([editedText], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${contentType}-${selectedProfile?.name || "content"}-${new Date().toISOString().split("T")[0]}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    
-    toast({
-      title: "Download avviato!",
-      description: "Il file è stato scaricato.",
-    });
+    const element = document.createElement("a");
+    const file = new Blob([editedText], { type: 'text/plain' });
+    element.href = URL.createObjectURL(file);
+    element.download = `contenuto-${contentType}-${Date.now()}.txt`;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
   };
 
   const handleGoBack = () => {
-    setLocation("/content-input");
-  };
-
-  const handleGenerateNew = () => {
     setLocation("/");
   };
 
-  const getContentStats = () => {
-    const words = editedText.trim().split(/\s+/).length;
-    const characters = editedText.length;
-    const hashtags = (editedText.match(/#\w+/g) || []).length;
-    
-    return { words, characters, hashtags };
-  };
-
-  const getContentTypeLabel = () => {
-    const labels: Record<string, string> = {
+  const getContentTypeLabel = (type: string) => {
+    const types: { [key: string]: string } = {
       facebook: "Post Facebook",
       instagram: "Post Instagram", 
       product: "Descrizione Prodotto",
       blog: "Idea Articolo Blog",
       video: "Script Video"
     };
-    return labels[contentType] || contentType;
+    return types[type] || type;
   };
 
-  if (!selectedProfile || !contentType || !generatedContent) {
+  if (!selectedProfile || !generatedContent) {
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-background">
         <Navigation />
         <div className="max-w-4xl mx-auto px-4 py-8">
           <div className="flex justify-center items-center h-64">
-            <div className="text-slate-600">Caricamento...</div>
+            <div className="text-muted-foreground">
+              {generateContentMutation.isPending ? "Generazione contenuto in corso..." : "Caricamento..."}
+            </div>
           </div>
         </div>
       </div>
     );
   }
 
-  const stats = getContentStats();
-
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       <Navigation />
       
-      {/* Main Content */}
       <div className="max-w-4xl mx-auto px-4 py-8">
         <Button
           variant="ghost"
           onClick={handleGoBack}
-          className="mb-6 text-slate-600 hover:text-slate-900"
+          className="mb-6 text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Indietro
+          Torna alla Dashboard
         </Button>
 
-        <Card className="shadow-lg">
-          {/* Header */}
-          <CardHeader className="border-b border-slate-200">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-2xl font-bold text-slate-900 mb-2">Ecco la tua Bozza!</h1>
-                <p className="text-slate-600">Il contenuto è stato generato con successo. Puoi modificarlo come preferisci.</p>
-                <div className="text-sm text-slate-500 mt-2">
-                  <span className="font-medium">{selectedProfile.name}</span> • {getContentTypeLabel()}
-                </div>
-              </div>
-              
-              {/* Action Buttons */}
-              <div className="flex items-center space-x-3">
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={handleCopy}
-                  className="text-slate-600 hover:text-slate-800"
-                >
-                  {copied ? <Check className="w-4 h-4 mr-2" /> : <Copy className="w-4 h-4 mr-2" />}
-                  {copied ? "Copiato!" : "Copia"}
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={handleDownload}
-                  className="text-slate-600 hover:text-slate-800"
-                >
-                  <Download className="w-4 h-4 mr-2" />
-                  Download
-                </Button>
-                <Button 
-                  size="sm"
-                  onClick={() => generateVariationMutation.mutate()}
-                  disabled={generateVariationMutation.isPending}
-                  className="bg-primary hover:bg-primary/90"
-                >
-                  <RefreshCw className={`w-4 h-4 mr-2 ${generateVariationMutation.isPending ? "animate-spin" : ""}`} />
-                  {generateVariationMutation.isPending ? "Generazione..." : "Genera Variante"}
-                </Button>
-              </div>
-            </div>
-          </CardHeader>
+        <div className="text-center mb-8">
+          <div className="text-sm text-muted-foreground mb-2">
+            Progetto: <span className="font-medium text-foreground">{selectedProfile.name}</span>
+          </div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            {getContentTypeLabel(contentType)}
+          </h1>
+          <p className="text-muted-foreground">
+            Contenuto generato dall'AI - Modifica e personalizza come preferisci
+          </p>
+        </div>
 
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Content Editor */}
-          <CardContent className="p-6">
-            <div className="mb-4">
-              <Label htmlFor="content">Contenuto Generato</Label>
-              <Textarea
-                id="content"
-                rows={12}
-                value={editedText}
-                onChange={(e) => setEditedText(e.target.value)}
-                className="mt-1 resize-none font-mono text-sm"
-              />
-            </div>
-
-            {/* Save Options */}
-            <div className="border-t border-slate-200 pt-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <Button 
-                    variant="outline"
-                    className="text-green-600 border-green-600 hover:bg-green-50"
-                  >
-                    <Save className="w-4 h-4 mr-2" />
-                    Salva Bozza
-                  </Button>
-                  
-                  {/* Feedback */}
-                  <div className="flex items-center space-x-2">
-                    <span className="text-sm text-slate-600">Valuta questo contenuto:</span>
+          <div className="lg:col-span-2">
+            <Card className="shadow-lg">
+              <CardHeader>
+                <div className="flex justify-between items-center">
+                  <h2 className="text-xl font-semibold">Contenuto Generato</h2>
+                  <div className="flex space-x-2">
                     <Button
-                      variant="ghost"
+                      onClick={handleCopy}
+                      variant="outline"
                       size="sm"
-                      onClick={() => ratingMutation.mutate(1)}
-                      className="text-slate-400 hover:text-green-500"
+                      disabled={copied}
                     >
-                      <ThumbsUp className="w-4 h-4" />
+                      {copied ? (
+                        <>
+                          <Check className="w-4 h-4 mr-2" />
+                          Copiato
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-4 h-4 mr-2" />
+                          Copia
+                        </>
+                      )}
                     </Button>
                     <Button
-                      variant="ghost"
+                      onClick={handleDownload}
+                      variant="outline"
                       size="sm"
-                      onClick={() => ratingMutation.mutate(-1)}
-                      className="text-slate-400 hover:text-red-500"
                     >
-                      <ThumbsDown className="w-4 h-4" />
+                      <Download className="w-4 h-4 mr-2" />
+                      Scarica
                     </Button>
                   </div>
                 </div>
-                
-                <Button 
-                  onClick={handleGenerateNew}
-                  className="bg-primary hover:bg-primary/90"
-                >
-                  Genera Nuovo Contenuto
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="content">Modifica il contenuto:</Label>
+                    <Textarea
+                      id="content"
+                      value={editedText}
+                      onChange={(e) => setEditedText(e.target.value)}
+                      rows={12}
+                      className="mt-1 resize-none"
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
 
-        {/* Quick Stats */}
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card>
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-slate-900">{stats.words}</div>
-              <div className="text-sm text-slate-600">Parole</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-slate-900">{stats.characters}</div>
-              <div className="text-sm text-slate-600">Caratteri</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-slate-900">{stats.hashtags}</div>
-              <div className="text-sm text-slate-600">Hashtag</div>
-            </CardContent>
-          </Card>
+          {/* Actions Sidebar */}
+          <div className="space-y-6">
+            {/* Generate Variation */}
+            <Card>
+              <CardHeader>
+                <h3 className="font-semibold">Genera Variazione</h3>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Crea una nuova versione di questo contenuto mantenendo lo stesso messaggio
+                </p>
+                <Button
+                  onClick={() => generateVariationMutation.mutate()}
+                  disabled={generateVariationMutation.isPending}
+                  className="w-full"
+                  variant="outline"
+                >
+                  {generateVariationMutation.isPending ? (
+                    <>
+                      <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                      Generazione...
+                    </>
+                  ) : (
+                    <>
+                      <RefreshCw className="w-4 h-4 mr-2" />
+                      Nuova Variazione
+                    </>
+                  )}
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Feedback */}
+            <Card>
+              <CardHeader>
+                <h3 className="font-semibold">Valuta il Contenuto</h3>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Il tuo feedback ci aiuta a migliorare la qualità dei contenuti generati
+                </p>
+                <div className="flex space-x-2">
+                  <Button
+                    onClick={() => ratingMutation.mutate(1)}
+                    variant="outline"
+                    size="sm"
+                    disabled={ratingMutation.isPending}
+                  >
+                    <ThumbsUp className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    onClick={() => ratingMutation.mutate(-1)}
+                    variant="outline"
+                    size="sm"
+                    disabled={ratingMutation.isPending}
+                  >
+                    <ThumbsDown className="w-4 h-4" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Profile Info */}
+            <Card>
+              <CardHeader>
+                <h3 className="font-semibold">Info Progetto</h3>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground">PUBBLICO TARGET</p>
+                  <p className="text-sm">{selectedProfile.targetAudience}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground">TONO DI VOCE</p>
+                  <p className="text-sm">{selectedProfile.toneOfVoice}</p>
+                </div>
+                {selectedProfile.keywords && (
+                  <div>
+                    <p className="text-xs font-medium text-muted-foreground">KEYWORDS</p>
+                    <p className="text-sm">{selectedProfile.keywords}</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </div>
