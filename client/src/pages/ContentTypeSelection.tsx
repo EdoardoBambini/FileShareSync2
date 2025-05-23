@@ -12,10 +12,18 @@ export default function ContentTypeSelection() {
 
   useEffect(() => {
     const profileData = sessionStorage.getItem("selectedProfile");
-    if (profileData) {
-      setSelectedProfile(JSON.parse(profileData));
-    } else {
-      // Redirect back to dashboard if no profile selected
+    
+    if (!profileData) {
+      console.log("Profilo mancante per selezione tipo, reindirizzamento alla dashboard...");
+      setLocation("/");
+      return;
+    }
+
+    try {
+      const profile = JSON.parse(profileData);
+      setSelectedProfile(profile);
+    } catch (error) {
+      console.error("Errore nel parsing del profilo:", error);
       setLocation("/");
     }
   }, [setLocation]);

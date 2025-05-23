@@ -34,9 +34,18 @@ export default function ContentSuggestion() {
 
   useEffect(() => {
     const profileData = sessionStorage.getItem("selectedProfile");
-    if (profileData) {
-      setSelectedProfile(JSON.parse(profileData));
-    } else {
+    
+    if (!profileData) {
+      console.log("Profilo mancante per suggerimenti, reindirizzamento alla dashboard...");
+      setLocation("/");
+      return;
+    }
+
+    try {
+      const profile = JSON.parse(profileData);
+      setSelectedProfile(profile);
+    } catch (error) {
+      console.error("Errore nel parsing del profilo:", error);
       setLocation("/");
     }
   }, [setLocation]);
@@ -113,17 +122,10 @@ export default function ContentSuggestion() {
     setLocation("/");
   };
 
+  // Non mostrare la pagina se non c'è il profilo selezionato
+  // L'useEffect sopra già gestisce il redirect alla dashboard
   if (!selectedProfile) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Navigation />
-        <div className="max-w-4xl mx-auto px-4 py-8">
-          <div className="flex justify-center items-center h-64">
-            <div className="text-muted-foreground">Caricamento...</div>
-          </div>
-        </div>
-      </div>
-    );
+    return null;
   }
 
   return (

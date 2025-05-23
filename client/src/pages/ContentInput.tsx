@@ -37,10 +37,25 @@ export default function ContentInput() {
     const profileData = sessionStorage.getItem("selectedProfile");
     const typeData = sessionStorage.getItem("contentType");
     
-    if (profileData && typeData) {
-      setSelectedProfile(JSON.parse(profileData));
+    // Se mancano i dati essenziali, reindirizza intelligentemente
+    if (!profileData) {
+      console.log("Profilo mancante, reindirizzamento alla dashboard...");
+      setLocation("/");
+      return;
+    }
+    
+    if (!typeData) {
+      console.log("Tipo contenuto mancante, reindirizzamento alla selezione...");
+      setLocation("/content-type");
+      return;
+    }
+
+    try {
+      const profile = JSON.parse(profileData);
+      setSelectedProfile(profile);
       setContentType(typeData);
-    } else {
+    } catch (error) {
+      console.error("Errore nel parsing dei dati:", error);
       setLocation("/");
     }
   }, [setLocation]);
