@@ -272,6 +272,70 @@ export default function ContentOutput() {
           </p>
         </div>
 
+        {/* Premium Upgrade Banner for Limited Content */}
+        {isContentLimited && subscriptionPlan === 'free' && (
+          <Card className="mb-6 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border-amber-200 dark:border-amber-800">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-full">
+                    <Crown className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-amber-900 dark:text-amber-100">
+                      Contenuto Limitato - Versione Gratuita
+                    </h3>
+                    <p className="text-sm text-amber-700 dark:text-amber-300">
+                      Stai visualizzando solo un'anteprima del contenuto generato.
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  onClick={() => createSubscriptionMutation.mutate()}
+                  disabled={createSubscriptionMutation.isPending}
+                  className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-medium px-6"
+                >
+                  <Crown className="w-4 h-4 mr-2" />
+                  {createSubscriptionMutation.isPending ? "Attivazione..." : "Passa a Premium €19.99/mese"}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Credits Display for Free Users */}
+        {subscriptionPlan === 'free' && (
+          <Card className="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-blue-200 dark:border-blue-800">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-full">
+                    <Zap className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <div>
+                    <span className="font-medium text-blue-900 dark:text-blue-100">
+                      Crediti rimanenti: {creditsRemaining}
+                    </span>
+                    <p className="text-xs text-blue-700 dark:text-blue-300">
+                      Premium = generazioni illimitate
+                    </p>
+                  </div>
+                </div>
+                {creditsRemaining <= 1 && (
+                  <Button
+                    onClick={() => createSubscriptionMutation.mutate()}
+                    size="sm"
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    <Crown className="w-3 h-3 mr-1" />
+                    Attiva Premium
+                  </Button>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Content Editor */}
           <div className="lg:col-span-2">
