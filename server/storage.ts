@@ -11,7 +11,7 @@ import {
   type InsertGeneratedContent,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc, and } from "drizzle-orm";
+import { eq, desc, and, sql } from "drizzle-orm";
 
 // Interface for storage operations
 export interface IStorage {
@@ -19,6 +19,8 @@ export interface IStorage {
   // (IMPORTANT) these user operations are mandatory for Replit Auth.
   getUser(id: string): Promise<User | undefined>;
   upsertUser(user: UpsertUser): Promise<User>;
+  decreaseUserCredits(userId: string): Promise<void>;
+  updateUserSubscription(userId: string, plan: string, stripeCustomerId?: string, stripeSubscriptionId?: string): Promise<User>;
   
   // Niche profile operations
   createNicheProfile(profile: InsertNicheProfile): Promise<NicheProfile>;
@@ -131,6 +133,31 @@ export class DatabaseStorage implements IStorage {
       .update(generatedContent)
       .set({ rating })
       .where(eq(generatedContent.id, id));
+  }
+
+  async decreaseUserCredits(userId: string): Promise<void> {
+    await db
+      .update(users)
+      .set({ 
+        creditsRemaining: sql`${users.creditsRemaining} - 1`,
+        updatedAt: new Date() 
+      })
+      .where(eq(users.id, userId));
+  }
+
+  async updateUserSubscription(userId: string, plan: string, stripeCustomerId?: string, stripeSubscriptionId?: string): Promise<User> {
+    const [user] = await db
+      .update(users)
+      .set({
+        subscriptionPlan: plan,
+        stripeCustomerId,
+        stripeSubscriptionId,
+        creditsRemaining: plan === 'premium' ? 999 : 3,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    return user;
   }
 }
 

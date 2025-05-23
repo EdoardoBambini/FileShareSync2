@@ -5,6 +5,14 @@ import { setupAuth, isAuthenticated } from "./replitAuth";
 import { generateContent, generateContentVariation, suggestContentTypes } from "./openai";
 import { insertNicheProfileSchema, updateNicheProfileSchema, insertGeneratedContentSchema } from "@shared/schema";
 import { z } from "zod";
+import Stripe from "stripe";
+
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
+}
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: "2023-10-16",
+});
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
@@ -265,6 +273,132 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching generated content:", error);
       res.status(500).json({ message: "Failed to fetch generated content" });
+    }
+  });
+
+  // Stripe Premium Subscription Routes
+  app.post('/api/create-subscription', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      if (!user || !user.email) {
+        return res.status(400).json({ message: "Utente non trovato o email mancante" });
+      }
+
+      // Check if user already has a subscription
+      if (user.stripeSubscriptionId) {
+        const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId);
+        if (subscription.status === 'active') {
+          return res.json({ 
+            message: "Abbonamento già attivo",
+            subscriptionId: subscription.id,
+            status: subscription.status 
+          });
+        }
+      }
+
+      // Create or get Stripe customer
+      let customerId = user.stripeCustomerId;
+      if (!customerId) {
+        const customer = await stripe.customers.create({
+          email: user.email,
+          name: `${user.firstName || ''} ${user.lastName || ''}`.trim(),
+        });
+        customerId = customer.id;
+        await storage.updateUserSubscription(userId, user.subscriptionPlan || 'free', customerId);
+      }
+
+      // Create subscription
+      const subscription = await stripe.subscriptions.create({
+        customer: customerId,
+        items: [{
+          price_data: {
+            currency: 'eur',
+            product_data: {
+              name: 'NicheScribe AI Premium',
+              description: 'Generazioni illimitate e contenuti completi',
+            },
+            unit_amount: 1999, // €19.99/month
+            recurring: {
+              interval: 'month',
+            },
+          },
+        }],
+        payment_behavior: 'default_incomplete',
+        payment_settings: { save_default_payment_method: 'on_subscription' },
+        expand: ['latest_invoice.payment_intent'],
+      });
+
+      // Update user subscription info
+      await storage.updateUserSubscription(userId, 'premium', customerId, subscription.id);
+
+      res.json({
+        subscriptionId: subscription.id,
+        clientSecret: subscription.latest_invoice?.payment_intent?.client_secret,
+        status: subscription.status,
+      });
+    } catch (error: any) {
+      console.error("Error creating subscription:", error);
+      res.status(500).json({ message: "Errore nella creazione dell'abbonamento: " + error.message });
+    }
+  });
+
+  // Check user subscription status
+  app.get('/api/subscription-status', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: "Utente non trovato" });
+      }
+
+      let subscriptionStatus = 'free';
+      let creditsRemaining = user.creditsRemaining || 0;
+
+      if (user.stripeSubscriptionId) {
+        try {
+          const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId);
+          subscriptionStatus = subscription.status === 'active' ? 'premium' : 'free';
+          
+          // Update user if subscription status changed
+          if (subscriptionStatus !== user.subscriptionPlan) {
+            await storage.updateUserSubscription(userId, subscriptionStatus);
+          }
+        } catch (error) {
+          console.error("Error checking Stripe subscription:", error);
+        }
+      }
+
+      res.json({
+        subscriptionPlan: subscriptionStatus,
+        creditsRemaining,
+        isUpgradeRequired: subscriptionStatus === 'free' && creditsRemaining <= 0,
+      });
+    } catch (error: any) {
+      console.error("Error checking subscription status:", error);
+      res.status(500).json({ message: "Errore nel controllo dell'abbonamento: " + error.message });
+    }
+  });
+
+  // Cancel subscription
+  app.post('/api/cancel-subscription', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      if (!user || !user.stripeSubscriptionId) {
+        return res.status(400).json({ message: "Nessun abbonamento attivo trovato" });
+      }
+
+      await stripe.subscriptions.cancel(user.stripeSubscriptionId);
+      await storage.updateUserSubscription(userId, 'free');
+
+      res.json({ message: "Abbonamento cancellato con successo" });
+    } catch (error: any) {
+      console.error("Error canceling subscription:", error);
+      res.status(500).json({ message: "Errore nella cancellazione dell'abbonamento: " + error.message });
     }
   });
 
