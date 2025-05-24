@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "NicheScribe AI",
+    "slug": "nichescribe-ai",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./client/public/icon-192.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./client/public/icon-512.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.nichescribe.ai",
+      "buildNumber": "1"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./client/public/icon-192.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.nichescribe.ai"
+    },
+    "web": {
+      "favicon": "./client/public/favicon.ico",
+      "bundler": "metro"
+    },
+    "plugins": [
+      [
+        "@expo/webpack-config",
+        {
+          "offline": true,
+          "favicon": "./client/public/favicon.ico"
+        }
+      ]
+    ]
+  }
+}
