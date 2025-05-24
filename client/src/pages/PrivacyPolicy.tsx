@@ -73,11 +73,26 @@ export default function PrivacyPolicy() {
               i dati vengono eliminati entro 30 giorni, eccetto quando richiesto per obblighi legali.
             </p>
 
-            <h2>7. Cookie e Tracking</h2>
+            <h2>7. Pubblicità e Cookie</h2>
             <p>
-              Utilizziamo cookie essenziali per il funzionamento del servizio. Non utilizziamo 
-              cookie di tracciamento di terze parti senza il tuo consenso.
+              La nostra app utilizza Google AdMob per mostrare pubblicità agli utenti gratuiti:
             </p>
+            <ul>
+              <li><strong>Cookie pubblicitari:</strong> Google AdMob utilizza cookie per personalizzare gli annunci</li>
+              <li><strong>Dati di targeting:</strong> Informazioni generali su età, lingua e interessi per annunci pertinenti</li>
+              <li><strong>Consenso:</strong> Puoi gestire le preferenze cookie attraverso il banner di consenso</li>
+              <li><strong>Opt-out:</strong> Gli utenti EU possono disattivare la personalizzazione pubblicitaria</li>
+              <li><strong>Età minima:</strong> La pubblicità personalizzata è disponibile solo per utenti 13+ anni</li>
+            </ul>
+
+            <h2>8. Terze parti e Partner</h2>
+            <p>Collaboriamo con partner fidati per fornire i nostri servizi:</p>
+            <ul>
+              <li><strong>Google AdMob:</strong> Per pubblicità personalizzate</li>
+              <li><strong>OpenAI:</strong> Per generazione contenuti AI</li>
+              <li><strong>Stripe:</strong> Per elaborazione pagamenti</li>
+              <li><strong>Replit:</strong> Per hosting e database</li>
+            </ul>
 
             <h2>8. Modifiche alla Privacy Policy</h2>
             <p>
