@@ -57,15 +57,15 @@ export default function Dashboard() {
         {/* Header - Mobile Responsive */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-8 space-y-4 sm:space-y-0">
           <div className="text-center sm:text-left">
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">I Miei Progetti</h1>
-            <p className="text-slate-600 text-sm sm:text-base">Gestisci i tuoi progetti e crea contenuti personalizzati con AI</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">{t('dashboard.title')}</h1>
+            <p className="text-slate-600 text-sm sm:text-base">{t('dashboard.subtitle')}</p>
           </div>
           <Button 
             onClick={handleCreateProfile}
             className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-white font-semibold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center w-full sm:w-auto"
           >
             <Plus className="w-5 h-5 mr-2" />
-            CREA NUOVO PROGETTO
+            {t('dashboard.newProject')}
           </Button>
         </div>
 
@@ -90,15 +90,15 @@ export default function Dashboard() {
             <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
               <UserPlus className="text-slate-400 w-10 h-10 sm:w-12 sm:h-12" />
             </div>
-            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3">Inizia il tuo primo progetto</h3>
+            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3">{t('dashboard.noProjects')}</h3>
             <p className="text-slate-600 mb-8 max-w-md mx-auto leading-relaxed">
-              Crea il tuo primo progetto per iniziare a generare contenuti personalizzati con l'intelligenza artificiale.
+              {t('dashboard.createFirst')}
             </p>
             <Button 
               onClick={handleCreateProfile}
               className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-white font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              CREA IL TUO PRIMO PROGETTO
+              {t('dashboard.newProject')}
             </Button>
           </div>
         )}

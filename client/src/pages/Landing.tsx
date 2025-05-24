@@ -29,22 +29,20 @@ export default function Landing() {
           <CardContent className="pt-8 pb-8 px-8">
             <div className="text-center">
               <h2 className="text-2xl font-bold text-slate-900 mb-3">
-                Accedi al tuo account
+                {t('landing.title')}
               </h2>
               <p className="text-slate-600 mb-8 leading-relaxed">
-                Crea contenuti professionali per social media, prodotti e marketing 
-                con l'intelligenza artificiale più avanzata.
+                {t('landing.subtitle')}
               </p>
               
               <Button asChild className="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-white text-lg py-4 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 font-semibold">
                 <a href="/api/login">
-                  ACCEDI CON REPLIT
+                  {t('auth.login')}
                 </a>
               </Button>
               
               <p className="text-xs text-slate-500 mt-6 leading-relaxed px-4">
-                <span className="font-medium">Login sicuro:</span> Verrai reindirizzato al sistema di autenticazione Replit. 
-                I tuoi dati sono protetti con crittografia avanzata.
+                {t('auth.secure')}
               </p>
               
               <div className="mt-6">

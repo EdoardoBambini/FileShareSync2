@@ -63,6 +63,10 @@ const translations: Record<Language, Record<string, string>> = {
     'common.copy': 'Copia',
     'common.download': 'Scarica',
     'common.loading': 'Caricamento...',
+    
+    // Auth
+    'auth.login': 'ACCEDI CON REPLIT',
+    'auth.secure': 'Login sicuro: Verrai reindirizzato al sistema di autenticazione Replit. I tuoi dati sono protetti con crittografia avanzata.',
   },
   
   en: {
@@ -116,6 +120,10 @@ const translations: Record<Language, Record<string, string>> = {
     'common.copy': 'Copy',
     'common.download': 'Download',
     'common.loading': 'Loading...',
+    
+    // Auth
+    'auth.login': 'LOGIN WITH REPLIT',
+    'auth.secure': 'Secure login: You will be redirected to Replit authentication system. Your data is protected with advanced encryption.',
   },
   
   es: {
@@ -169,6 +177,10 @@ const translations: Record<Language, Record<string, string>> = {
     'common.copy': 'Copiar',
     'common.download': 'Descargar',
     'common.loading': 'Cargando...',
+    
+    // Auth
+    'auth.login': 'INICIAR CON REPLIT',
+    'auth.secure': 'Inicio seguro: Serás redirigido al sistema de autenticación de Replit. Tus datos están protegidos con cifrado avanzado.',
   }
 };
 
