@@ -26,7 +26,7 @@ export default function ContentOutput() {
   // Usa i crediti e piano dal database tramite useAuth
   const { user } = useAuth();
   const { toast } = useToast();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const queryClient = useQueryClient();
 
   // Funzione per generare contenuto dai suggerimenti AI
@@ -85,8 +85,8 @@ export default function ContentOutput() {
       
       if (error.type === "credits_exhausted") {
         toast({
-          title: "Crediti Esauriti!",
-          description: "Passa al Premium per generazioni illimitate!",
+          title: t('premium.creditsExhausted'),
+          description: t('premium.creditsDesc'),
           variant: "destructive",
         });
         setCreditsRemaining(0);
@@ -236,8 +236,8 @@ export default function ContentOutput() {
       await navigator.clipboard.writeText(editedText);
       setCopied(true);
       toast({
-        title: "Copiato!",
-        description: "Il contenuto è stato copiato negli appunti.",
+        title: t('output.copied'),
+        description: t('output.copiedDesc'),
       });
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
@@ -300,7 +300,7 @@ export default function ContentOutput() {
           className="mb-6 text-slate-600 hover:text-slate-900 transition-colors"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Torna alla Dashboard
+          {t('output.backToDashboard')}
         </Button>
 
         <div className="text-center mb-8 sm:mb-12">
@@ -311,7 +311,7 @@ export default function ContentOutput() {
             {getContentTypeLabel(contentType)}
           </h1>
           <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Contenuto generato dall'AI - Modifica e personalizza come preferisci
+            {t('output.contentGenerated')}
           </p>
         </div>
 
