@@ -1,130 +1,141 @@
-import { useAuth } from "@/hooks/useAuth";
-import { useEffect } from "react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Crown, X } from "lucide-react";
-import { useLocation } from "wouter";
+import { useEffect, useRef } from 'react';
+import { useAuth } from '@/hooks/useAuth';
 
 interface AdBannerProps {
   size?: "banner" | "square" | "leaderboard";
   position?: "top" | "bottom" | "sidebar";
 }
 
+// AdMob Configuration
+const ADMOB_CONFIG = {
+  iOS: {
+    appId: "ca-app-pub-8922429945740746~9060532520",
+    banners: {
+      primary: "ca-app-pub-8922429945740746/2754737371",
+      secondary: "ca-app-pub-8922429945740746/4870006078", 
+      tertiary: "ca-app-pub-8922429945740746/5403508485"
+    },
+    interstitial: "ca-app-pub-8922429945740746/4090426816"
+  },
+  android: {
+    appId: "ca-app-pub-8922429945740746~7815492368",
+    banners: {
+      primary: "ca-app-pub-8922429945740746/6502410696",
+      secondary: "ca-app-pub-8922429945740746/2563165686",
+      tertiary: "ca-app-pub-8922429945740746/2777345143"
+    },
+    interstitial: "ca-app-pub-8922429945740746/6437997362"
+  }
+};
+
+// Detect platform
+const getPlatform = () => {
+  const userAgent = navigator.userAgent.toLowerCase();
+  if (userAgent.includes('iphone') || userAgent.includes('ipad')) return 'iOS';
+  if (userAgent.includes('android')) return 'android';
+  return 'web';
+};
+
+// Get banner ID based on position and platform
+const getBannerId = (position: string) => {
+  const platform = getPlatform();
+  if (platform === 'web') return null; // Web fallback
+  
+  const config = ADMOB_CONFIG[platform as keyof typeof ADMOB_CONFIG];
+  
+  switch (position) {
+    case 'top': return config.banners.primary;
+    case 'bottom': return config.banners.secondary;
+    case 'sidebar': return config.banners.tertiary;
+    default: return config.banners.primary;
+  }
+};
+
 export default function AdBanner({ size = "banner", position = "top" }: AdBannerProps) {
   const { user } = useAuth();
-  const [, setLocation] = useLocation();
-
-  // Non mostrare banner agli utenti Premium
-  if ((user as any)?.subscriptionPlan === "premium") {
+  const adRef = useRef<HTMLDivElement>(null);
+  
+  // Don't show ads to premium users
+  if (user?.subscriptionPlan === 'premium') {
     return null;
   }
-
-  const handleUpgrade = () => {
-    setLocation("/subscribe");
-  };
-
-  const getSizeClasses = () => {
-    switch (size) {
-      case "banner":
-        return "w-full h-24";
-      case "square":
-        return "w-64 h-64";
-      case "leaderboard":
-        return "w-full h-16";
-      default:
-        return "w-full h-24";
+  
+  const bannerId = getBannerId(position);
+  
+  useEffect(() => {
+    // For web version, show placeholder for now
+    if (!bannerId && adRef.current) {
+      adRef.current.innerHTML = `
+        <div style="
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          padding: 20px;
+          text-align: center;
+          border-radius: 8px;
+          font-family: 'Montserrat', sans-serif;
+        ">
+          <div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">
+            🚀 Passa a Premium
+          </div>
+          <div style="font-size: 14px; opacity: 0.9;">
+            Rimuovi le pubblicità e sblocca tutte le funzionalità
+          </div>
+        </div>
+      `;
+      return;
     }
-  };
-
-  const getAdContent = () => {
-    // In produzione, qui inseriresti il codice Google AdSense
-    // Per ora mostriamo un banner promozionale per il Premium
     
-    const adContents = [
-      {
-        title: "Contenuti Illimitati",
-        subtitle: "Passa a Premium e genera tutto quello che vuoi senza limitazioni",
-        cta: "Scopri Premium"
-      },
-      {
-        title: "Suggerimenti Foto & Video",
-        subtitle: "Solo con Premium: idee complete con suggerimenti visivi avanzati",
-        cta: "Attiva Premium"
-      },
-      {
-        title: "Generazione Avanzata",
-        subtitle: "Premium: contenuti professionali senza alcun limite",
-        cta: "Upgrade Ora"
-      }
-    ];
-
-    const randomAd = adContents[Math.floor(Math.random() * adContents.length)];
-
-    return (
-      <Card className={`${getSizeClasses()} bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20 relative overflow-hidden`}>
-        <div className="absolute top-1 right-1">
-          <div className="text-[10px] text-muted-foreground/60 bg-background/80 px-1 rounded">
-            Sponsorizzato
-          </div>
-        </div>
-        
-        <div className="h-full flex items-center justify-between p-3">
-          <div className="flex-1">
-            <div className="font-semibold text-sm text-foreground flex items-center">
-              <Crown className="w-4 h-4 mr-2 text-primary" />
-              {randomAd.title}
-            </div>
-            <div className="text-xs text-muted-foreground mt-1">
-              {randomAd.subtitle}
-            </div>
-          </div>
-          
-          <Button 
-            size="sm" 
-            onClick={handleUpgrade}
-            className="ml-3 h-8 text-xs"
-          >
-            {randomAd.cta}
-          </Button>
-        </div>
-        
-        {/* Decorative elements */}
-        <div className="absolute -right-8 -top-8 w-16 h-16 bg-primary/10 rounded-full"></div>
-        <div className="absolute -left-4 -bottom-4 w-8 h-8 bg-primary/5 rounded-full"></div>
-      </Card>
-    );
+    // For mobile apps, this will be handled by the native AdMob SDK
+    if (bannerId && window.admob) {
+      window.admob.createBanner({
+        adId: bannerId,
+        position: position === 'bottom' ? window.admob.AD_POSITION.BOTTOM_CENTER : window.admob.AD_POSITION.TOP_CENTER,
+        autoShow: true
+      });
+    }
+  }, [bannerId, position]);
+  
+  // Size classes for different banner types
+  const sizeClasses = {
+    banner: "h-[50px] w-full max-w-[320px]", // Mobile banner
+    leaderboard: "h-[90px] w-full max-w-[728px]", // Desktop banner
+    square: "h-[250px] w-full max-w-[300px]" // Medium rectangle
   };
-
-  // Google AdSense Component (da attivare in produzione)
-  const GoogleAdSense = () => {
-    useEffect(() => {
-      try {
-        // In produzione, decommentare e inserire il tuo Google AdSense ID
-        // (window.adsbygoogle = window.adsbygoogle || []).push({});
-      } catch (error) {
-        console.log("AdSense non ancora configurato");
-      }
-    }, []);
-
-    return (
-      <div className={getSizeClasses()}>
-        {/* In produzione, sostituire con il codice AdSense reale */}
-        {/* <ins className="adsbygoogle"
-             style={{ display: "block" }}
-             data-ad-client="ca-pub-XXXXXXXXXX"
-             data-ad-slot="XXXXXXXXXX"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins> */}
-        
-        {/* Per ora mostra il banner promozionale */}
-        {getAdContent()}
-      </div>
-    );
-  };
-
+  
   return (
-    <div className={`${position === "sidebar" ? "mb-4" : "my-4"}`}>
-      <GoogleAdSense />
+    <div className={`${sizeClasses[size]} mx-auto my-4 flex items-center justify-center`}>
+      <div 
+        ref={adRef}
+        className="w-full h-full bg-gray-100 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 flex items-center justify-center"
+      >
+        {!bannerId && (
+          <span className="text-sm text-gray-500 dark:text-gray-400">
+            Pubblicità
+          </span>
+        )}
+      </div>
     </div>
   );
+}
+
+// Interstitial Ad Function
+export const showInterstitialAd = () => {
+  const platform = getPlatform();
+  if (platform === 'web') return; // Skip for web
+  
+  const config = ADMOB_CONFIG[platform as keyof typeof ADMOB_CONFIG];
+  
+  if (window.admob) {
+    window.admob.prepareInterstitial({
+      adId: config.interstitial,
+      autoShow: true
+    });
+  }
+};
+
+// Global type for AdMob
+declare global {
+  interface Window {
+    admob: any;
+  }
 }

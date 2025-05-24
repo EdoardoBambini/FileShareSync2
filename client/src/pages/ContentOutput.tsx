@@ -2,6 +2,7 @@ import { useLocation } from "wouter";
 import { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Navigation from "@/components/Navigation";
+import AdBanner, { showInterstitialAd } from "@/components/AdBanner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -54,6 +55,17 @@ export default function ContentOutput() {
       
       // Refresh user data to get updated credits from database
       queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+      
+      // Show interstitial ad every 3rd generation for free users
+      if (user?.subscriptionPlan !== 'premium') {
+        const generationCount = localStorage.getItem('generationCount') || '0';
+        const count = parseInt(generationCount) + 1;
+        localStorage.setItem('generationCount', count.toString());
+        
+        if (count % 3 === 0) {
+          showInterstitialAd();
+        }
+      }
       
       if (data.upgradeMessage) {
         toast({
@@ -297,6 +309,9 @@ export default function ContentOutput() {
             Contenuto generato dall'AI - Modifica e personalizza come preferisci
           </p>
         </div>
+
+        {/* Banner pubblicitario top */}
+        <AdBanner size="leaderboard" position="top" />
 
         {/* Premium Upgrade Banner for Limited Content */}
         {isContentLimited && subscriptionPlan === 'free' && (
