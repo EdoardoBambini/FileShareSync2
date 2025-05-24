@@ -54,6 +54,15 @@ const translations: Record<Language, Record<string, string>> = {
     'credits.upgrade': 'Passa a Premium',
     'credits.weeklyReset': 'Reset settimanale',
     
+    // Content Types
+    'content.facebook': 'Post Facebook',
+    'content.instagram': 'Post Instagram', 
+    'content.product': 'Descrizione Prodotto',
+    'content.blog': 'Idea Articolo Blog',
+    'content.video': 'Script Breve Video',
+    'content.whatToday': 'Cosa vuoi creare oggi?',
+    'content.chooseType': 'Scegli il tipo di contenuto che desideri generare con l\'intelligenza artificiale',
+    
     // Common
     'common.back': 'Indietro',
     'common.next': 'Avanti',
