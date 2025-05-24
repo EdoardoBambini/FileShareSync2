@@ -7,7 +7,17 @@ interface AdBannerProps {
   position?: "top" | "bottom" | "sidebar";
 }
 
-// AdMob Configuration
+// Web AdSense Configuration  
+const ADSENSE_CONFIG = {
+  clientId: "ca-pub-8922429945740746",
+  slots: {
+    banner: "1234567890", // Sostituisci con il tuo slot ID
+    square: "1234567891", // Sostituisci con il tuo slot ID
+    leaderboard: "1234567892" // Sostituisci con il tuo slot ID
+  }
+};
+
+// AdMob Configuration (per le app mobile)
 const ADMOB_CONFIG = {
   iOS: {
     appId: "ca-app-pub-8922429945740746~9060532520",
