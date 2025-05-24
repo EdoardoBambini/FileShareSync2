@@ -38,6 +38,9 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.logout': 'Logout',
     'nav.subscribe': 'Diventa Premium',
     
+    // Account
+    'account.subtitle': 'Gestisci le tue informazioni e monitora l\'attività del tuo account',
+    
     // Dashboard
     'dashboard.title': 'I Miei Progetti',
     'dashboard.subtitle': 'Gestisci i tuoi progetti di content marketing',
@@ -167,6 +170,9 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.logout': 'Logout',
     'nav.subscribe': 'Go Premium',
     
+    // Account
+    'account.subtitle': 'Manage your information and monitor your account activity',
+    
     // Dashboard
     'dashboard.title': 'My Projects',
     'dashboard.subtitle': 'Manage your content marketing projects',
@@ -293,6 +299,9 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.account': 'Cuenta',
     'nav.logout': 'Cerrar Sesión',
     'nav.subscribe': 'Hazte Premium',
+    
+    // Account
+    'account.subtitle': 'Gestiona tu información y monitorea la actividad de tu cuenta',
     
     // Dashboard
     'dashboard.title': 'Mis Proyectos',
