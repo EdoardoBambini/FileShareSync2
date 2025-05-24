@@ -9,10 +9,12 @@ import { Plus, UserPlus } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import type { NicheProfile } from "@shared/schema";
 import { useAuth } from "@/hooks/useAuth";
+import { useLanguage } from "@/hooks/useLanguage";
 
 export default function Dashboard() {
   const [, setLocation] = useLocation();
   const queryClient = useQueryClient();
+  const { t } = useLanguage();
   const { user } = useAuth();
   
   const { data: profiles = [], isLoading } = useQuery({

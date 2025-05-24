@@ -1,10 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PenTool } from "lucide-react";
+import { useLanguage } from "@/hooks/useLanguage";
+import LanguageSelector from "@/components/LanguageSelector";
 
 export default function Landing() {
+  const { t } = useLanguage();
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
+      {/* Language Selector */}
+      <div className="absolute top-4 right-4">
+        <LanguageSelector />
+      </div>
+      
       <div className="w-full max-w-md">
         {/* Logo/Brand */}
         <div className="text-center mb-8">
