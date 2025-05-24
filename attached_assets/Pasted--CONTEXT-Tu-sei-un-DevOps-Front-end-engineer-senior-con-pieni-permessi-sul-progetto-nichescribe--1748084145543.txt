@@ -1,0 +1,80 @@
+# CONTEXT
+Tu sei un DevOps + Front-end engineer senior con pieni permessi sul progetto
+“nichescribe-app”. Stack: Python (Flask), Jinja2 templates, Tailwind CSS,
+Alpine.js.  Branch predefinito: main.
+
+# OBIETTIVO
+1. Aggiorna la landing page per renderla unica rispetto alla concorrenza usando
+   le 8 USP elencate sotto.
+2. Localizza automaticamente hero section + bullet value prop in IT, EN, ES.
+3. Inserisci meta-tag SEO, JSON-LD schema.org e UTM autogenerator stub.
+4. Non alterare logica back-end; crea solo UI/UX e placeholder di funzioni
+   future.
+
+# USP DA EVIDENZIARE
+- Preset Local-first (template festività nazionali)
+- Tone-of-Voice Profiler (quiz 4 parametri)
+- Hashtag Intelligence (difficoltà-opportunità)
+- One-click Publish (WordPress, Shopify Blog, Buffer)
+- Snippet SEO (title, meta, schema.org)
+- Tracking UTM automatico
+- Predizione CTR + engagement
+- Free Plan “3×3” (3 generazioni, 3 account collegabili)
+
+# TASKS
+1. **Hero Section multilanguage**
+   • File target: `templates/index.html`  
+   • Inserisci subito dopo `<header>` un blocco Jinja `{% trans %}` con:
+     - `h1` ≤ 60 char:  
+       - IT → “Contenuti pronti, zero stress.”  
+       - EN → “Content done. Zero stress.”  
+       - ES → “Contenido listo. Sin estrés.”  
+     - `p` ≤ 120 char che spiega AI trilingue & localizzazione.  
+     - 3 bullet con emoji ☑️, ciascuno preso da una USP diversa.  
+     - CTA `<a>` class `btn-primary` → “Prova gratis”.
+   • Mobile-first, poi breakpoint `md:`.
+
+2. **Section “Perché unico” (8 USP)**
+   • Sotto l’hero aggiungi una `<section id="unique">` grid-3 colonne `lg:grid-cols-4`.
+   • Ogni card: icona SVG, titolo USP, descrizione max 40 parole.
+   • Cicla su lista USP in un array Jinja per facilità di traduzione.
+
+3. **Localizzazione**
+   • Usa gettext: aggiorna/crea `translations/it/LC_MESSAGES/messages.po`,
+     `en`, `es`.  
+   • Aggiungi nuove stringhe con `pybabel extract` e `pybabel update`.
+
+4. **SEO & JSON-LD**
+   • In `<head>` di `base.html` inserisci blocco Jinja che compila:
+     - `title`, `meta name="description"` multilingua.  
+     - `<script type="application/ld+json">` con `@type:"SoftwareApplication"`,
+       `applicationCategory:"Marketing"`, `operatingSystem:"Web"`.
+   • Chromatic lint con `npm run prettier` se presente.
+
+5. **Stub Tracking UTM & Predictive CTR**
+   • Crea in `static/js/analytics.js` funzioni vuote:
+     ```js
+     export function addUTM(url, campaign){ /* TODO */ }
+     export function predictCTR(text){ /* TODO ML */ }
+     ```
+   • Importa il file nel bundle principale senza rompere build.
+
+6. **Test di regressione**
+   • Esegui `pytest` e `npm run build` (se esiste).  
+   • Se falliscono, fai rollback delle sole parti incriminate e logga dettagli.
+
+# CONSTRAINTS
+- Nessuna libreria nuova lato-server; lato-client solo moduli già presenti.
+- Massima copertura Lighthouse ≥ 90/100 per performance & best-practices.
+- Non cambiare rotta API né database.
+
+# OUTPUT ATTESO
+1. Commit firmato sul branch `landing-unique-<date>` con messaggio
+   “feat: landing multilanguage + unique USP”.
+2. Log sintetico (≤ 120 righe) stampato in console con:
+   - file modificati  
+   - nuovi i18n id  
+   - Lighthouse score
+
+# EXECUTION
+Procedi ora. Al termine stampa SOLTANTO il log sintetico.
