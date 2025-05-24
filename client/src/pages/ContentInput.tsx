@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { ArrowLeft, Facebook, Instagram, ShoppingBag, FileText, Video } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/hooks/useLanguage";
 import type { NicheProfile } from "@shared/schema";
 
 export default function ContentInput() {
