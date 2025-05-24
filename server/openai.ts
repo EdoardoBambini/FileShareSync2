@@ -5,6 +5,26 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || process.env.OPENAI_KEY || ""
 });
 
+// Premium AI helper functions
+function getCreativityTemperature(creativity?: string): number {
+  switch (creativity) {
+    case 'conservative': return 0.3;
+    case 'balanced': return 0.7;
+    case 'creative': return 0.9;
+    case 'experimental': return 1.2;
+    default: return 0.7;
+  }
+}
+
+function getTokenLimit(targetLength?: string): number {
+  switch (targetLength) {
+    case 'short': return 600;
+    case 'medium': return 1200;
+    case 'long': return 2000;
+    default: return 1000;
+  }
+}
+
 export interface ContentGenerationInput {
   nicheProfile: {
     name: string;
@@ -15,25 +35,39 @@ export interface ContentGenerationInput {
   };
   contentType: string;
   inputData: any;
-  language?: string; // Add language parameter
+  language?: string;
+  isPremium?: boolean;
+  advancedOptions?: {
+    model?: 'gpt-4o' | 'gpt-4o-mini' | 'gpt-4-turbo';
+    creativity?: 'conservative' | 'balanced' | 'creative' | 'experimental';
+    writingStyle?: 'professional' | 'casual' | 'humorous' | 'persuasive' | 'emotional' | 'technical';
+    seoOptimization?: boolean;
+    sentimentAnalysis?: boolean;
+    generateVariants?: number;
+    includeHashtagSuggestions?: boolean;
+    includeCallToAction?: boolean;
+    targetLength?: 'short' | 'medium' | 'long';
+    emotionalTone?: 'neutral' | 'enthusiastic' | 'urgent' | 'inspirational' | 'empathetic';
+  };
 }
 
 export async function generateContent(input: ContentGenerationInput): Promise<string> {
-  const { nicheProfile, contentType, inputData, language = 'it' } = input;
+  const { nicheProfile, contentType, inputData, language = 'it', isPremium = false, advancedOptions = {} } = input;
 
   let prompt = "";
   let systemPrompt = "";
 
-  // Multilingual system prompts
-  const systemPrompts = {
+  // Premium AI model selection
+  const selectedModel = isPremium && advancedOptions.model ? advancedOptions.model : 'gpt-4o-mini';
+  
+  // Enhanced system prompts for Premium users
+  const baseSystemPrompt = {
     it: `Sei un esperto copywriter e content creator specializzato nella nicchia: ${nicheProfile.name}.
 
 Pubblico target: ${nicheProfile.targetAudience}
 Obiettivo principale: ${nicheProfile.contentGoal}
 Tono di voce: ${nicheProfile.toneOfVoice}
-${nicheProfile.keywords ? `Keywords da includere: ${nicheProfile.keywords}` : ""}
-
-Scrivi sempre in italiano e crea contenuti autentici, coinvolgenti e appropriati per il pubblico target specificato.`,
+${nicheProfile.keywords ? `Keywords da includere: ${nicheProfile.keywords}` : ""}`,
 
     en: `You are an expert copywriter and content creator specialized in the niche: ${nicheProfile.name}.
 
@@ -54,7 +88,48 @@ ${nicheProfile.keywords ? `Palabras clave a incluir: ${nicheProfile.keywords}` :
 Siempre escribe en español y crea contenido auténtico, atractivo y apropiado para la audiencia objetivo especificada.`
   };
 
-  systemPrompt = systemPrompts[language as keyof typeof systemPrompts] || systemPrompts.it;
+  // Enhanced system prompt with Premium features
+  const premiumEnhancements = isPremium ? {
+    it: `
+
+FUNZIONALITÀ PREMIUM ATTIVE:
+${advancedOptions.writingStyle ? `- Stile di scrittura: ${advancedOptions.writingStyle}` : ''}
+${advancedOptions.emotionalTone ? `- Tono emotivo: ${advancedOptions.emotionalTone}` : ''}
+${advancedOptions.creativity ? `- Livello creatività: ${advancedOptions.creativity}` : ''}
+${advancedOptions.seoOptimization ? '- Ottimizzazione SEO attiva - includi parole chiave naturalmente' : ''}
+${advancedOptions.targetLength ? `- Lunghezza target: ${advancedOptions.targetLength}` : ''}
+${advancedOptions.includeHashtagSuggestions ? '- Includi hashtag rilevanti e trending' : ''}
+${advancedOptions.includeCallToAction ? '- Includi call-to-action persuasiva' : ''}
+
+Scrivi sempre in italiano e crea contenuti autentici, coinvolgenti e appropriati per il pubblico target specificato.`,
+    en: `
+
+PREMIUM FEATURES ACTIVE:
+${advancedOptions.writingStyle ? `- Writing style: ${advancedOptions.writingStyle}` : ''}
+${advancedOptions.emotionalTone ? `- Emotional tone: ${advancedOptions.emotionalTone}` : ''}
+${advancedOptions.creativity ? `- Creativity level: ${advancedOptions.creativity}` : ''}
+${advancedOptions.seoOptimization ? '- SEO optimization active - include keywords naturally' : ''}
+${advancedOptions.targetLength ? `- Target length: ${advancedOptions.targetLength}` : ''}
+${advancedOptions.includeHashtagSuggestions ? '- Include relevant and trending hashtags' : ''}
+${advancedOptions.includeCallToAction ? '- Include persuasive call-to-action' : ''}
+
+Always write in English and create authentic, engaging content appropriate for the specified target audience.`,
+    es: `
+
+FUNCIONES PREMIUM ACTIVAS:
+${advancedOptions.writingStyle ? `- Estilo de escritura: ${advancedOptions.writingStyle}` : ''}
+${advancedOptions.emotionalTone ? `- Tono emocional: ${advancedOptions.emotionalTone}` : ''}
+${advancedOptions.creativity ? `- Nivel de creatividad: ${advancedOptions.creativity}` : ''}
+${advancedOptions.seoOptimization ? '- Optimización SEO activa - incluye palabras clave naturalmente' : ''}
+${advancedOptions.targetLength ? `- Longitud objetivo: ${advancedOptions.targetLength}` : ''}
+${advancedOptions.includeHashtagSuggestions ? '- Incluye hashtags relevantes y trending' : ''}
+${advancedOptions.includeCallToAction ? '- Incluye call-to-action persuasiva' : ''}
+
+Siempre escribe en español y crea contenido auténtico, atractivo y apropiado para la audiencia objetivo especificada.`
+  } : { it: '\n\nScrivi sempre in italiano e crea contenuti autentici, coinvolgenti e appropriati per il pubblico target specificato.', en: '\n\nAlways write in English and create authentic, engaging content appropriate for the specified target audience.', es: '\n\nSiempre escribe en español y crea contenido auténtico, atractivo y apropiado para la audiencia objetivo especificada.' };
+
+  systemPrompt = (baseSystemPrompt[language as keyof typeof baseSystemPrompt] || baseSystemPrompt.it) + 
+                 (premiumEnhancements[language as keyof typeof premiumEnhancements] || premiumEnhancements.it);
 
   // Build multilingual prompts based on content type
   const contentPrompts = {
@@ -170,16 +245,24 @@ Lo script deve:
       throw new Error(`Tipo di contenuto non supportato: ${contentType}`);
   }
 
+  // Premium AI configuration
+  const modelConfig = {
+    model: selectedModel,
+    messages: [
+      { role: "system", content: systemPrompt },
+      { role: "user", content: prompt }
+    ],
+    temperature: isPremium ? getCreativityTemperature(advancedOptions.creativity) : 0.7,
+    max_tokens: isPremium ? getTokenLimit(advancedOptions.targetLength) : 800,
+    ...(isPremium && selectedModel === 'gpt-4o' && {
+      top_p: 0.9,
+      frequency_penalty: 0.1,
+      presence_penalty: 0.1
+    })
+  };
+
   try {
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o",
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: prompt }
-      ],
-      temperature: 0.8,
-      max_tokens: 1000,
-    });
+    const response = await openai.chat.completions.create(modelConfig);
 
     const generatedText = response.choices[0].message.content;
     if (!generatedText) {
