@@ -414,3 +414,257 @@ La variazione deve essere diversa ma ugualmente efficace.`;
     throw new Error("Errore durante la generazione della variazione. Riprova più tardi.");
   }
 }
+
+// Advanced USP Features for NicheScribe AI
+
+export interface HashtagAnalysis {
+  hashtag: string;
+  difficulty: 'low' | 'medium' | 'high';
+  opportunity: number; // 1-100
+  volume: string;
+  recommendation: string;
+}
+
+export async function analyzeHashtags(hashtags: string[], niche: string, language: string = 'it'): Promise<HashtagAnalysis[]> {
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  
+  const response = await openai.chat.completions.create({
+    model: "gpt-4o",
+    messages: [
+      {
+        role: "system",
+        content: `Sei un esperto di hashtag marketing e social media analytics. Analizza gli hashtag forniti per difficoltà competitiva e opportunità di engagement nella nicchia "${niche}".
+
+        Per ogni hashtag, valuta:
+        - difficulty: low (facile posizionarsi), medium (moderata competizione), high (alta competizione)
+        - opportunity: punteggio 1-100 di potenziale engagement
+        - volume: stima del volume di utilizzo (molto basso, basso, medio, alto, molto alto)
+        - recommendation: suggerimento strategico breve
+
+        Rispondi SOLO in formato JSON con oggetto "hashtags" contenente array di analisi.`
+      },
+      {
+        role: "user",
+        content: `Analizza questi hashtag per la nicchia "${niche}": ${hashtags.join(', ')}`
+      }
+    ],
+    temperature: 0.3,
+    response_format: { type: "json_object" }
+  });
+
+  try {
+    const result = JSON.parse(response.choices[0].message.content || '{"hashtags": []}');
+    return result.hashtags || [];
+  } catch (error) {
+    console.error('Error parsing hashtag analysis:', error);
+    return hashtags.map(tag => ({
+      hashtag: tag,
+      difficulty: 'medium' as const,
+      opportunity: 50,
+      volume: 'medio',
+      recommendation: 'Analisi non disponibile'
+    }));
+  }
+}
+
+export interface SEOSnippet {
+  title: string;
+  metaDescription: string;
+  schema: any;
+  suggestedUrl: string;
+}
+
+export async function generateSEOSnippets(content: string, contentType: string, keywords: string[], language: string = 'it'): Promise<SEOSnippet> {
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  
+  const response = await openai.chat.completions.create({
+    model: "gpt-4o",
+    messages: [
+      {
+        role: "system",
+        content: `Sei un esperto SEO specialist. Genera snippet SEO ottimizzati per il contenuto fornito.
+
+        Crea:
+        - title: max 60 caratteri, include keyword principale
+        - metaDescription: max 160 caratteri, accattivante e descrittiva
+        - schema: JSON-LD schema.org appropriato per il tipo di contenuto
+        - suggestedUrl: URL SEO-friendly
+
+        Rispondi SOLO in formato JSON valido.`
+      },
+      {
+        role: "user",
+        content: `Contenuto: ${content.substring(0, 500)}
+        Tipo: ${contentType}
+        Keywords: ${keywords.join(', ')}
+        Lingua: ${language}`
+      }
+    ],
+    temperature: 0.2,
+    response_format: { type: "json_object" }
+  });
+
+  try {
+    return JSON.parse(response.choices[0].message.content || '{}');
+  } catch (error) {
+    console.error('Error parsing SEO snippets:', error);
+    return {
+      title: 'Titolo SEO',
+      metaDescription: 'Descrizione SEO ottimizzata per i motori di ricerca',
+      schema: {},
+      suggestedUrl: '/contenuto-seo'
+    };
+  }
+}
+
+export async function predictCTR(content: string, platform: string = 'facebook'): Promise<{ ctr: number; engagement: number; suggestions: string[] }> {
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  
+  const response = await openai.chat.completions.create({
+    model: "gpt-4o",
+    messages: [
+      {
+        role: "system",
+        content: `Sei un data scientist esperto in social media analytics. Predici il CTR e engagement per il contenuto fornito basandoti su pattern di successo della piattaforma ${platform}.
+
+        Analizza:
+        - Lunghezza del testo
+        - Presenza di emoji/call-to-action
+        - Struttura del messaggio
+        - Appeal emotivo
+
+        Fornisci:
+        - ctr: percentuale prevista 0-100
+        - engagement: punteggio engagement 0-100  
+        - suggestions: array di 3-5 consigli per migliorare performance
+
+        Rispondi SOLO in formato JSON valido.`
+      },
+      {
+        role: "user",
+        content: `Piattaforma: ${platform}
+        Contenuto: ${content}`
+      }
+    ],
+    temperature: 0.3,
+    response_format: { type: "json_object" }
+  });
+
+  try {
+    return JSON.parse(response.choices[0].message.content || '{"ctr": 2.5, "engagement": 50, "suggestions": []}');
+  } catch (error) {
+    console.error('Error predicting CTR:', error);
+    return {
+      ctr: 2.5,
+      engagement: 50,
+      suggestions: ['Aggiungi emoji per aumentare engagement', 'Includi una call-to-action chiara']
+    };
+  }
+}
+
+export interface HolidayPreset {
+  id: string;
+  name: string;
+  date: string;
+  country: string;
+  contentSuggestions: string[];
+  hashtags: string[];
+  toneRecommendations: string[];
+}
+
+export function getHolidayPresets(country: string = 'IT', language: string = 'it'): HolidayPreset[] {
+  const presets: { [key: string]: HolidayPreset[] } = {
+    IT: [
+      {
+        id: 'natale-2024',
+        name: 'Natale',
+        date: '2024-12-25',
+        country: 'IT',
+        contentSuggestions: [
+          'Offerte natalizie esclusive',
+          'Auguri personalizzati per i clienti',
+          'Regalo perfetto per ogni occasione',
+          'Atmosfera magica del Natale'
+        ],
+        hashtags: ['#Natale2024', '#OffertaNatale', '#RegaliNatale', '#MagiaDelNatale'],
+        toneRecommendations: ['Caloroso e festoso', 'Emotivo e familiare', 'Gioioso e celebrativo']
+      },
+      {
+        id: 'sanvalentino-2025',
+        name: 'San Valentino',
+        date: '2025-02-14',
+        country: 'IT',
+        contentSuggestions: [
+          'Regali romantici per la persona amata',
+          'Idee per una serata speciale',
+          'Prodotti perfetti per gli innamorati',
+          'Dichiarazioni d\'amore uniche'
+        ],
+        hashtags: ['#SanValentino2025', '#AmoreTiAmo', '#RegaliRomantici', '#FestaDeglInnamorati'],
+        toneRecommendations: ['Romantico e passionale', 'Dolce e affettuoso', 'Intimo e coinvolgente']
+      },
+      {
+        id: 'pasqua-2025',
+        name: 'Pasqua',
+        date: '2025-04-20',
+        country: 'IT',
+        contentSuggestions: [
+          'Rinascita e nuovi inizi',
+          'Tradizioni pasquali in famiglia',
+          'Offerte primaverili speciali',
+          'Auguri di serenità e pace'
+        ],
+        hashtags: ['#Pasqua2025', '#Rinascita', '#TradizionePasquale', '#PrimaveraInArrivo'],
+        toneRecommendations: ['Speranzoso e rinnovato', 'Tradizionale e familiare', 'Fresco e primaverile']
+      }
+    ],
+    EN: [
+      {
+        id: 'christmas-2024',
+        name: 'Christmas',
+        date: '2024-12-25',
+        country: 'EN',
+        contentSuggestions: [
+          'Exclusive Christmas deals',
+          'Personalized holiday greetings',
+          'Perfect gifts for everyone',
+          'Christmas magic and joy'
+        ],
+        hashtags: ['#Christmas2024', '#HolidayDeals', '#ChristmasGifts', '#ChristmasMagic'],
+        toneRecommendations: ['Warm and festive', 'Joyful and celebratory', 'Magical and inspiring']
+      },
+      {
+        id: 'valentines-2025',
+        name: 'Valentine\'s Day',
+        date: '2025-02-14',
+        country: 'EN',
+        contentSuggestions: [
+          'Romantic gifts for your loved one',
+          'Perfect date night ideas',
+          'Products made for lovers',
+          'Unique love declarations'
+        ],
+        hashtags: ['#ValentinesDay2025', '#LoveYou', '#RomanticGifts', '#LoveIsInTheAir'],
+        toneRecommendations: ['Romantic and passionate', 'Sweet and affectionate', 'Intimate and engaging']
+      }
+    ],
+    ES: [
+      {
+        id: 'navidad-2024',
+        name: 'Navidad',
+        date: '2024-12-25',
+        country: 'ES',
+        contentSuggestions: [
+          'Ofertas navideñas exclusivas',
+          'Felicitaciones personalizadas',
+          'Regalos perfectos para todos',
+          'Magia y alegría navideña'
+        ],
+        hashtags: ['#Navidad2024', '#OfertasNavidad', '#RegalosNavidad', '#MagiaNavideña'],
+        toneRecommendations: ['Cálido y festivo', 'Alegre y celebrativo', 'Mágico e inspirador']
+      }
+    ]
+  };
+
+  return presets[country] || presets.IT;
+}

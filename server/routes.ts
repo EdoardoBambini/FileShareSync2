@@ -474,6 +474,55 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Advanced USP features endpoints
+  app.post("/api/analyze-hashtags", isAuthenticated, async (req, res) => {
+    try {
+      const { hashtags, niche, language } = req.body;
+      const { analyzeHashtags } = await import("./openai");
+      const analysis = await analyzeHashtags(hashtags, niche, language);
+      res.json({ analysis });
+    } catch (error: any) {
+      console.error("Error analyzing hashtags:", error);
+      res.status(500).json({ message: "Errore durante l'analisi degli hashtag: " + error.message });
+    }
+  });
+
+  app.post("/api/generate-seo", isAuthenticated, async (req, res) => {
+    try {
+      const { content, contentType, keywords, language } = req.body;
+      const { generateSEOSnippets } = await import("./openai");
+      const seoData = await generateSEOSnippets(content, contentType, keywords, language);
+      res.json(seoData);
+    } catch (error: any) {
+      console.error("Error generating SEO snippets:", error);
+      res.status(500).json({ message: "Errore durante la generazione SEO: " + error.message });
+    }
+  });
+
+  app.post("/api/predict-ctr", isAuthenticated, async (req, res) => {
+    try {
+      const { content, platform } = req.body;
+      const { predictCTR } = await import("./openai");
+      const prediction = await predictCTR(content, platform);
+      res.json(prediction);
+    } catch (error: any) {
+      console.error("Error predicting CTR:", error);
+      res.status(500).json({ message: "Errore durante la predizione CTR: " + error.message });
+    }
+  });
+
+  app.get("/api/holiday-presets", async (req, res) => {
+    try {
+      const { country = 'IT', language = 'it' } = req.query;
+      const { getHolidayPresets } = await import("./openai");
+      const presets = getHolidayPresets(country as string, language as string);
+      res.json({ presets });
+    } catch (error: any) {
+      console.error("Error getting holiday presets:", error);
+      res.status(500).json({ message: "Errore durante il caricamento dei preset: " + error.message });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
