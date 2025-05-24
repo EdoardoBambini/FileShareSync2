@@ -516,6 +516,9 @@ export default function ContentOutput() {
             </Card>
           </div>
         </div>
+
+        {/* Banner pubblicitario bottom */}
+        <AdBanner size="square" position="sidebar" />
       </div>
     </div>
   );
