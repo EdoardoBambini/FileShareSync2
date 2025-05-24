@@ -51,35 +51,35 @@ export default function Landing() {
                     <div className="w-full border-t border-slate-200"></div>
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-white text-slate-500">Funzionalità principali</span>
+                    <span className="px-2 bg-white text-slate-500">{t('landing.featuresTitle')}</span>
                   </div>
                 </div>
                 
                 <div className="mt-6 space-y-4">
-                  <div className="flex items-center text-sm text-slate-700">
-                    <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
-                    <div>
-                      <span className="font-semibold">3 generazioni gratuite</span>
-                      <span className="text-slate-500 ml-1">per iniziare</span>
+                  <div className="flex items-start text-sm text-slate-700">
+                    <div className="w-2 h-2 bg-green-500 rounded-full mr-3 mt-2 flex-shrink-0"></div>
+                    <div className="flex-1">
+                      <span className="font-semibold">{t('landing.feature.freeGenerations')}</span>
+                      <span className="text-slate-500 ml-1">{t('landing.feature.toStart')}</span>
                     </div>
                   </div>
-                  <div className="flex items-center text-sm text-slate-700">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
-                    <div>Suggerimenti AI intelligenti</div>
+                  <div className="flex items-start text-sm text-slate-700">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mr-3 mt-2 flex-shrink-0"></div>
+                    <div className="flex-1">{t('landing.feature.aiSuggestions')}</div>
                   </div>
-                  <div className="flex items-center text-sm text-slate-700">
-                    <div className="w-2 h-2 bg-purple-500 rounded-full mr-3"></div>
-                    <div>Post Facebook, Instagram, blog e prodotti</div>
+                  <div className="flex items-start text-sm text-slate-700">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full mr-3 mt-2 flex-shrink-0"></div>
+                    <div className="flex-1">{t('landing.feature.multiPlatform')}</div>
                   </div>
-                  <div className="flex items-center text-sm text-slate-700">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full mr-3"></div>
-                    <div>Gestione progetti multipli</div>
+                  <div className="flex items-start text-sm text-slate-700">
+                    <div className="w-2 h-2 bg-orange-500 rounded-full mr-3 mt-2 flex-shrink-0"></div>
+                    <div className="flex-1">{t('landing.feature.multiProject')}</div>
                   </div>
-                  <div className="flex items-center text-sm text-slate-700">
-                    <div className="w-2 h-2 bg-indigo-500 rounded-full mr-3"></div>
-                    <div>
-                      <span className="font-semibold">Premium €4.99/mese</span>
-                      <span className="text-slate-500 ml-1">- contenuti illimitati</span>
+                  <div className="flex items-start text-sm text-slate-700">
+                    <div className="w-2 h-2 bg-indigo-500 rounded-full mr-3 mt-2 flex-shrink-0"></div>
+                    <div className="flex-1">
+                      <span className="font-semibold">{t('landing.feature.premium')}</span>
+                      <span className="text-slate-500 ml-1">{t('landing.feature.unlimited')}</span>
                     </div>
                   </div>
                 </div>

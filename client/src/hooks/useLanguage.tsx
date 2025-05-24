@@ -23,6 +23,14 @@ const translations: Record<Language, Record<string, string>> = {
     'landing.feature2.desc': 'Contenuti ottimizzati per Facebook, Instagram, blog e e-commerce',
     'landing.feature3.title': 'Risparmia Tempo',
     'landing.feature3.desc': 'Crea settimane di contenuti in pochi minuti',
+    'landing.featuresTitle': 'Funzionalità principali',
+    'landing.feature.freeGenerations': '3 generazioni gratuite',
+    'landing.feature.toStart': 'per iniziare',
+    'landing.feature.aiSuggestions': 'Suggerimenti AI intelligenti',
+    'landing.feature.multiPlatform': 'Post Facebook, Instagram, blog e prodotti',
+    'landing.feature.multiProject': 'Gestione progetti multipli',
+    'landing.feature.premium': 'Premium €4.99/mese',
+    'landing.feature.unlimited': '- contenuti illimitati',
     
     // Navigation
     'nav.dashboard': 'Dashboard',
@@ -54,14 +62,7 @@ const translations: Record<Language, Record<string, string>> = {
     'credits.upgrade': 'Passa a Premium',
     'credits.weeklyReset': 'Reset settimanale',
     
-    // Content Types
-    'content.facebook': 'Post Facebook',
-    'content.instagram': 'Post Instagram', 
-    'content.product': 'Descrizione Prodotto',
-    'content.blog': 'Idea Articolo Blog',
-    'content.video': 'Script Breve Video',
-    'content.whatToday': 'Cosa vuoi creare oggi?',
-    'content.chooseType': 'Scegli il tipo di contenuto che desideri generare con l\'intelligenza artificiale',
+
     
     // Common
     'common.back': 'Indietro',
@@ -151,6 +152,14 @@ const translations: Record<Language, Record<string, string>> = {
     'landing.feature2.desc': 'Content optimized for Facebook, Instagram, blogs and e-commerce',
     'landing.feature3.title': 'Save Time',
     'landing.feature3.desc': 'Create weeks of content in minutes',
+    'landing.featuresTitle': 'Key Features',
+    'landing.feature.freeGenerations': '3 free generations',
+    'landing.feature.toStart': 'to get started',
+    'landing.feature.aiSuggestions': 'Smart AI suggestions',
+    'landing.feature.multiPlatform': 'Facebook, Instagram, blog and product posts',
+    'landing.feature.multiProject': 'Multiple project management',
+    'landing.feature.premium': 'Premium €4.99/month',
+    'landing.feature.unlimited': '- unlimited content',
     
     // Navigation
     'nav.dashboard': 'Dashboard',
@@ -270,6 +279,14 @@ const translations: Record<Language, Record<string, string>> = {
     'landing.feature2.desc': 'Contenido optimizado para Facebook, Instagram, blogs y e-commerce',
     'landing.feature3.title': 'Ahorra Tiempo',
     'landing.feature3.desc': 'Crea semanas de contenido en minutos',
+    'landing.featuresTitle': 'Características Clave',
+    'landing.feature.freeGenerations': '3 generaciones gratuitas',
+    'landing.feature.toStart': 'para empezar',
+    'landing.feature.aiSuggestions': 'Sugerencias inteligentes de IA',
+    'landing.feature.multiPlatform': 'Posts de Facebook, Instagram, blog y productos',
+    'landing.feature.multiProject': 'Gestión de múltiples proyectos',
+    'landing.feature.premium': 'Premium €4.99/mes',
+    'landing.feature.unlimited': '- contenido ilimitado',
     
     // Navigation
     'nav.dashboard': 'Panel',
