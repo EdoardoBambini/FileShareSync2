@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.nichescribe.app',
+  appId: 'com.startup.nichescribe',
   appName: 'NicheScribe AI',
   webDir: 'dist',
   server: {
