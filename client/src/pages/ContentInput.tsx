@@ -366,6 +366,14 @@ export default function ContentInput() {
             <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
               {renderFormFields()}
               
+              {/* Premium AI Options */}
+              <div className="border-t pt-6">
+                <PremiumAIOptions 
+                  isPremium={user?.subscriptionPlan === 'premium'}
+                  onOptionsChange={setAdvancedOptions}
+                />
+              </div>
+              
               <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 pt-6">
                 <Button 
                   type="button" 

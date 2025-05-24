@@ -246,20 +246,22 @@ Lo script deve:
   }
 
   // Premium AI configuration
-  const modelConfig = {
+  const modelConfig: any = {
     model: selectedModel,
     messages: [
-      { role: "system", content: systemPrompt },
-      { role: "user", content: prompt }
+      { role: "system" as const, content: systemPrompt },
+      { role: "user" as const, content: prompt }
     ],
     temperature: isPremium ? getCreativityTemperature(advancedOptions.creativity) : 0.7,
     max_tokens: isPremium ? getTokenLimit(advancedOptions.targetLength) : 800,
-    ...(isPremium && selectedModel === 'gpt-4o' && {
-      top_p: 0.9,
-      frequency_penalty: 0.1,
-      presence_penalty: 0.1
-    })
   };
+
+  // Add advanced parameters for Premium users with GPT-4o
+  if (isPremium && selectedModel === 'gpt-4o') {
+    modelConfig.top_p = 0.9;
+    modelConfig.frequency_penalty = 0.1;
+    modelConfig.presence_penalty = 0.1;
+  }
 
   try {
     const response = await openai.chat.completions.create(modelConfig);
