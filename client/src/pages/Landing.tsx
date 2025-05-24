@@ -55,29 +55,29 @@ export default function Landing() {
                   </div>
                 </div>
                 
-                <div className="mt-6 space-y-4">
-                  <div className="flex items-start text-sm text-slate-700">
-                    <div className="w-2 h-2 bg-green-500 rounded-full mr-3 mt-2 flex-shrink-0"></div>
-                    <div className="flex-1">
+                <div className="mt-6 space-y-3">
+                  <div className="flex items-center text-sm text-slate-700">
+                    <div className="w-2 h-2 bg-green-500 rounded-full mr-3 flex-shrink-0"></div>
+                    <div className="flex-1 leading-relaxed">
                       <span className="font-semibold">{t('landing.feature.freeGenerations')}</span>
                       <span className="text-slate-500 ml-1">{t('landing.feature.toStart')}</span>
                     </div>
                   </div>
-                  <div className="flex items-start text-sm text-slate-700">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mr-3 mt-2 flex-shrink-0"></div>
-                    <div className="flex-1">{t('landing.feature.aiSuggestions')}</div>
+                  <div className="flex items-center text-sm text-slate-700">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mr-3 flex-shrink-0"></div>
+                    <div className="flex-1 leading-relaxed">{t('landing.feature.aiSuggestions')}</div>
                   </div>
-                  <div className="flex items-start text-sm text-slate-700">
-                    <div className="w-2 h-2 bg-purple-500 rounded-full mr-3 mt-2 flex-shrink-0"></div>
-                    <div className="flex-1">{t('landing.feature.multiPlatform')}</div>
+                  <div className="flex items-center text-sm text-slate-700">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full mr-3 flex-shrink-0"></div>
+                    <div className="flex-1 leading-relaxed">{t('landing.feature.multiPlatform')}</div>
                   </div>
-                  <div className="flex items-start text-sm text-slate-700">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full mr-3 mt-2 flex-shrink-0"></div>
-                    <div className="flex-1">{t('landing.feature.multiProject')}</div>
+                  <div className="flex items-center text-sm text-slate-700">
+                    <div className="w-2 h-2 bg-orange-500 rounded-full mr-3 flex-shrink-0"></div>
+                    <div className="flex-1 leading-relaxed">{t('landing.feature.multiProject')}</div>
                   </div>
-                  <div className="flex items-start text-sm text-slate-700">
-                    <div className="w-2 h-2 bg-indigo-500 rounded-full mr-3 mt-2 flex-shrink-0"></div>
-                    <div className="flex-1">
+                  <div className="flex items-center text-sm text-slate-700">
+                    <div className="w-2 h-2 bg-indigo-500 rounded-full mr-3 flex-shrink-0"></div>
+                    <div className="flex-1 leading-relaxed">
                       <span className="font-semibold">{t('landing.feature.premium')}</span>
                       <span className="text-slate-500 ml-1">{t('landing.feature.unlimited')}</span>
                     </div>
