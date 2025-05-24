@@ -179,7 +179,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/generate-content', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
-      const { nicheProfileId, contentType, inputData } = req.body;
+      const { nicheProfileId, contentType, inputData, language = 'it' } = req.body;
       
       // Get user info to check subscription and credits
       const user = await storage.getUser(userId);
@@ -206,7 +206,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Progetto non trovato" });
       }
       
-      // Generate content using OpenAI
+      // Generate content using OpenAI with selected language
       const generatedText = await generateContent({
         nicheProfile: {
           name: nicheProfile.name,
@@ -217,6 +217,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         },
         contentType,
         inputData,
+        language, // Pass the selected language
       });
       
       // For free users, limit content length and add upgrade prompt

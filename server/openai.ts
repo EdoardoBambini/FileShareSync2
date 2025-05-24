@@ -15,41 +15,107 @@ export interface ContentGenerationInput {
   };
   contentType: string;
   inputData: any;
+  language?: string; // Add language parameter
 }
 
 export async function generateContent(input: ContentGenerationInput): Promise<string> {
-  const { nicheProfile, contentType, inputData } = input;
+  const { nicheProfile, contentType, inputData, language = 'it' } = input;
 
   let prompt = "";
   let systemPrompt = "";
 
-  // Build system prompt based on niche profile
-  systemPrompt = `Sei un esperto copywriter e content creator specializzato nella nicchia: ${nicheProfile.name}.
+  // Multilingual system prompts
+  const systemPrompts = {
+    it: `Sei un esperto copywriter e content creator specializzato nella nicchia: ${nicheProfile.name}.
 
 Pubblico target: ${nicheProfile.targetAudience}
 Obiettivo principale: ${nicheProfile.contentGoal}
 Tono di voce: ${nicheProfile.toneOfVoice}
 ${nicheProfile.keywords ? `Keywords da includere: ${nicheProfile.keywords}` : ""}
 
-Scrivi sempre in italiano e crea contenuti autentici, coinvolgenti e appropriati per il pubblico target specificato.`;
+Scrivi sempre in italiano e crea contenuti autentici, coinvolgenti e appropriati per il pubblico target specificato.`,
 
-  // Build specific prompts based on content type
-  switch (contentType) {
-    case "facebook":
-    case "instagram":
-      prompt = `Crea un post ${contentType === "facebook" ? "Facebook" : "Instagram"} coinvolgente basato su:
+    en: `You are an expert copywriter and content creator specialized in the niche: ${nicheProfile.name}.
+
+Target audience: ${nicheProfile.targetAudience}
+Main objective: ${nicheProfile.contentGoal}
+Tone of voice: ${nicheProfile.toneOfVoice}
+${nicheProfile.keywords ? `Keywords to include: ${nicheProfile.keywords}` : ""}
+
+Always write in English and create authentic, engaging content appropriate for the specified target audience.`,
+
+    es: `Eres un experto copywriter y creador de contenido especializado en el nicho: ${nicheProfile.name}.
+
+Audiencia objetivo: ${nicheProfile.targetAudience}
+Objetivo principal: ${nicheProfile.contentGoal}
+Tono de voz: ${nicheProfile.toneOfVoice}
+${nicheProfile.keywords ? `Palabras clave a incluir: ${nicheProfile.keywords}` : ""}
+
+Siempre escribe en español y crea contenido auténtico, atractivo y apropiado para la audiencia objetivo especificada.`
+  };
+
+  systemPrompt = systemPrompts[language as keyof typeof systemPrompts] || systemPrompts.it;
+
+  // Build multilingual prompts based on content type
+  const contentPrompts = {
+    it: {
+      facebook: `Crea un post Facebook coinvolgente basato su:
 
 Argomento: ${inputData.topic}
 ${inputData.cta ? `Call to Action: ${inputData.cta}` : ""}
 ${inputData.hashtags ? `Hashtag suggeriti: ${inputData.hashtags}` : ""}
 
-Il post deve:
-- Essere coinvolgente e adatto al pubblico target
-- Includere emoji appropriate se pertinenti al tono di voce
-- Avere una struttura che catturi l'attenzione
-- Includere gli hashtag in modo naturale
-- Rispettare il tono di voce specificato nel profilo
-- Essere ottimizzato per l'engagement`;
+Il post deve essere coinvolgente, includere emoji appropriate, catturare l'attenzione e ottimizzato per l'engagement.`,
+
+      instagram: `Crea un post Instagram coinvolgente basato su:
+
+Argomento: ${inputData.topic}
+${inputData.cta ? `Call to Action: ${inputData.cta}` : ""}
+${inputData.hashtags ? `Hashtag suggeriti: ${inputData.hashtags}` : ""}
+
+Il post deve essere visivamente attraente, includere emoji e hashtag naturalmente integrati.`
+    },
+    en: {
+      facebook: `Create an engaging Facebook post based on:
+
+Topic: ${inputData.topic}
+${inputData.cta ? `Call to Action: ${inputData.cta}` : ""}
+${inputData.hashtags ? `Suggested hashtags: ${inputData.hashtags}` : ""}
+
+The post should be engaging, include appropriate emojis, capture attention and be optimized for engagement.`,
+
+      instagram: `Create an engaging Instagram post based on:
+
+Topic: ${inputData.topic}
+${inputData.cta ? `Call to Action: ${inputData.cta}` : ""}
+${inputData.hashtags ? `Suggested hashtags: ${inputData.hashtags}` : ""}
+
+The post should be visually appealing, include emojis and naturally integrated hashtags.`
+    },
+    es: {
+      facebook: `Crea una publicación de Facebook atractiva basada en:
+
+Tema: ${inputData.topic}
+${inputData.cta ? `Call to Action: ${inputData.cta}` : ""}
+${inputData.hashtags ? `Hashtags sugeridos: ${inputData.hashtags}` : ""}
+
+La publicación debe ser atractiva, incluir emojis apropiados, capturar la atención y estar optimizada para el engagement.`,
+
+      instagram: `Crea una publicación de Instagram atractiva basada en:
+
+Tema: ${inputData.topic}
+${inputData.cta ? `Call to Action: ${inputData.cta}` : ""}
+${inputData.hashtags ? `Hashtags sugeridos: ${inputData.hashtags}` : ""}
+
+La publicación debe ser visualmente atractiva, incluir emojis y hashtags integrados naturalmente.`
+    }
+  };
+
+  switch (contentType) {
+    case "facebook":
+    case "instagram":
+      const langPrompts = contentPrompts[language as keyof typeof contentPrompts] || contentPrompts.it;
+      prompt = langPrompts[contentType as keyof typeof langPrompts] || langPrompts.facebook;
       break;
 
     case "product":
