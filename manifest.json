@@ -1,0 +1,85 @@
+{
+  "name": "NicheScribe AI - Generazione Contenuti",
+  "short_name": "NicheScribe AI",
+  "description": "Crea contenuti AI per social media, e-commerce e marketing personalizzato",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "it-IT",
+  "categories": ["productivity", "business", "utilities"],
+  "icons": [
+    {
+      "src": "/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Dashboard principale"
+    },
+    {
+      "src": "/screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Interfaccia desktop"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Nuovo Progetto",
+      "short_name": "Nuovo",
+      "description": "Crea un nuovo progetto di content marketing",
+      "url": "/?action=new-project",
+      "icons": [
+        {
+          "src": "/shortcut-new.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Genera Contenuto",
+      "short_name": "Genera",
+      "description": "Genera nuovo contenuto AI",
+      "url": "/?action=generate",
+      "icons": [
+        {
+          "src": "/shortcut-generate.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://nichescribe-ai.replit.app/manifest.json"
+    }
+  ],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "protocol_handlers": [
+    {
+      "protocol": "web+nichescribe",
+      "url": "/?action=open&content=%s"
+    }
+  ]
+}

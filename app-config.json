@@ -1,0 +1,100 @@
+{
+  "appName": "NicheScribe AI",
+  "packageName": "com.nichescribe.ai",
+  "version": "1.0.0",
+  "bundleId": "com.nichescribe.ai",
+  "displayName": "NicheScribe AI",
+  "description": "Crea contenuti AI per social media, e-commerce e marketing personalizzato",
+  "author": "NicheScribe Team",
+  "website": "https://nichescribe-ai.replit.app",
+  
+  "platforms": {
+    "ios": {
+      "enabled": true,
+      "bundleId": "com.nichescribe.ai",
+      "teamId": "YOUR_APPLE_TEAM_ID",
+      "targetSdkVersion": "17.0"
+    },
+    "android": {
+      "enabled": true,
+      "packageName": "com.nichescribe.ai",
+      "targetSdkVersion": 34,
+      "minSdkVersion": 24,
+      "compileSdkVersion": 34
+    }
+  },
+  
+  "features": {
+    "admob": {
+      "enabled": true,
+      "android": {
+        "appId": "ca-app-pub-3940256099942544~3347511713",
+        "bannerAdUnitId": "ca-app-pub-3940256099942544/6300978111",
+        "interstitialAdUnitId": "ca-app-pub-3940256099942544/1033173712"
+      },
+      "ios": {
+        "appId": "ca-app-pub-3940256099942544~1458002511",
+        "bannerAdUnitId": "ca-app-pub-3940256099942544/2934735716",
+        "interstitialAdUnitId": "ca-app-pub-3940256099942544/4411468910"
+      }
+    },
+    "pushNotifications": true,
+    "inAppPurchases": true,
+    "camera": false,
+    "location": false,
+    "contacts": false,
+    "calendar": false
+  },
+  
+  "appearance": {
+    "theme": "light",
+    "statusBarStyle": "default",
+    "backgroundColor": "#ffffff",
+    "primaryColor": "#3b82f6",
+    "splashScreen": {
+      "backgroundColor": "#ffffff",
+      "image": "/splash-screen.png",
+      "imageMode": "contain"
+    }
+  },
+  
+  "orientation": "portrait",
+  
+  "permissions": {
+    "android": [
+      "android.permission.INTERNET",
+      "android.permission.ACCESS_NETWORK_STATE",
+      "com.google.android.gms.permission.AD_ID"
+    ],
+    "ios": [
+      "NSAppTransportSecurity",
+      "NSUserTrackingUsageDescription"
+    ]
+  },
+  
+  "build": {
+    "webUrl": "https://nichescribe-ai.replit.app",
+    "autoUpdate": true,
+    "cacheStrategy": "networkFirst"
+  },
+  
+  "monetization": {
+    "subscriptions": {
+      "premium": {
+        "price": "4.99",
+        "currency": "EUR",
+        "period": "monthly",
+        "productId": "nichescribe_premium_monthly"
+      }
+    },
+    "ads": {
+      "frequency": "freeUsersOnly",
+      "types": ["banner", "interstitial"]
+    }
+  },
+  
+  "localization": {
+    "defaultLanguage": "it",
+    "supportedLanguages": ["it", "en", "es"]
+  }
+}
