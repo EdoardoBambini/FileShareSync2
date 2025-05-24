@@ -12,13 +12,18 @@ import { ArrowLeft, Facebook, Instagram, ShoppingBag, FileText, Video } from "lu
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useAuth } from "@/hooks/useAuth";
 import type { NicheProfile } from "@shared/schema";
+import PremiumAIOptions from "@/components/PremiumAIOptions";
 
 export default function ContentInput() {
   const [, setLocation] = useLocation();
   const [selectedProfile, setSelectedProfile] = useState<NicheProfile | null>(null);
   const [contentType, setContentType] = useState<string>("");
+  const [advancedOptions, setAdvancedOptions] = useState({});
   const { toast } = useToast();
+  const { t } = useLanguage();
+  const { user } = useAuth();
 
   const form = useForm({
     defaultValues: {
@@ -63,10 +68,13 @@ export default function ContentInput() {
 
   const generateMutation = useMutation({
     mutationFn: async (inputData: any) => {
+      const isPremium = user?.subscriptionPlan === 'premium';
       const response = await apiRequest("POST", "/api/generate-content", {
         nicheProfileId: selectedProfile?.id,
         contentType,
         inputData,
+        isPremium,
+        advancedOptions: isPremium ? advancedOptions : undefined,
       });
       return response.json();
     },

@@ -133,6 +133,8 @@ const translations: Record<Language, Record<string, string>> = {
     'premium.limitedDesc': 'Stai visualizzando solo un\'anteprima del contenuto generato.',
     'premium.creditsExhausted': 'Crediti Esauriti!',
     'premium.creditsDesc': 'Passa al Premium per generazioni illimitate!',
+    'premium.aiModels': 'Modelli AI Avanzati',
+    'premium.upgradeForAdvanced': 'Passa a Premium per sbloccare modelli AI avanzati e opzioni di personalizzazione',
     
     // Errors & Messages
     'error.general': 'Si è verificato un errore.',
@@ -263,6 +265,8 @@ const translations: Record<Language, Record<string, string>> = {
     'premium.limitedDesc': 'You are viewing only a preview of the generated content.',
     'premium.creditsExhausted': 'Credits Exhausted!',
     'premium.creditsDesc': 'Upgrade to Premium for unlimited generations!',
+    'premium.aiModels': 'Advanced AI Models',
+    'premium.upgradeForAdvanced': 'Upgrade to Premium to unlock advanced AI models and customization options',
     
     // Errors & Messages
     'error.general': 'An error occurred.',
@@ -393,6 +397,8 @@ const translations: Record<Language, Record<string, string>> = {
     'premium.limitedDesc': 'Estás viendo solo una vista previa del contenido generado.',
     'premium.creditsExhausted': '¡Créditos Agotados!',
     'premium.creditsDesc': '¡Actualiza a Premium para generaciones ilimitadas!',
+    'premium.aiModels': 'Modelos de IA Avanzados',
+    'premium.upgradeForAdvanced': 'Actualiza a Premium para desbloquear modelos de IA avanzados y opciones de personalización',
     
     // Errors & Messages
     'error.general': 'Ha ocurrido un error.',
