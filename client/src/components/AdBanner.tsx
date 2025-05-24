@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import { isAdsConsented, checkAgeForAds } from './CookieConsent';
 
 interface AdBannerProps {
   size?: "banner" | "square" | "leaderboard";
@@ -57,6 +58,11 @@ export default function AdBanner({ size = "banner", position = "top" }: AdBanner
   
   // Don't show ads to premium users
   if (user?.subscriptionPlan === 'premium') {
+    return null;
+  }
+  
+  // Check consent and age verification for ads compliance
+  if (!isAdsConsented() || !checkAgeForAds()) {
     return null;
   }
   

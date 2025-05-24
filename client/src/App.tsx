@@ -5,6 +5,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuth } from "@/hooks/useAuth";
 import { LanguageProvider } from "@/hooks/useLanguage";
+import CookieConsent from "@/components/CookieConsent";
+import AgeVerification from "@/components/AgeVerification";
 import Landing from "@/pages/Landing";
 import Dashboard from "@/pages/Dashboard";
 import Onboarding from "@/pages/Onboarding";
@@ -52,6 +54,9 @@ function App() {
         <TooltipProvider>
           <Toaster />
           <Router />
+          {/* Compliance Components */}
+          <AgeVerification />
+          <CookieConsent />
         </TooltipProvider>
       </LanguageProvider>
     </QueryClientProvider>
