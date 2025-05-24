@@ -11,6 +11,7 @@ import { ArrowLeft, Copy, Download, RefreshCw, Save, ThumbsUp, ThumbsDown, Check
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
+import { useLanguage } from "@/hooks/useLanguage";
 import type { NicheProfile, GeneratedContent } from "@shared/schema";
 
 export default function ContentOutput() {
@@ -25,6 +26,7 @@ export default function ContentOutput() {
   // Usa i crediti e piano dal database tramite useAuth
   const { user } = useAuth();
   const { toast } = useToast();
+  const { language } = useLanguage();
   const queryClient = useQueryClient();
 
   // Funzione per generare contenuto dai suggerimenti AI
@@ -43,7 +45,10 @@ export default function ContentOutput() {
 
   const generateContentMutation = useMutation({
     mutationFn: async (data: { nicheProfileId: number; contentType: string; inputData: any }) => {
-      const response = await apiRequest("POST", "/api/generate-content", data);
+      const response = await apiRequest("POST", "/api/generate-content", {
+        ...data,
+        language // Pass selected language to backend
+      });
       return response.json();
     },
     onSuccess: (data) => {
