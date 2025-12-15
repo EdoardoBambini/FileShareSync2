@@ -17,7 +17,7 @@ export default function Dashboard() {
   const { t } = useLanguage();
   const { user } = useAuth();
   
-  const { data: profiles = [], isLoading } = useQuery({
+  const { data: profiles = [], isLoading } = useQuery<NicheProfile[]>({
     queryKey: ["/api/niche-profiles"],
   });
 
