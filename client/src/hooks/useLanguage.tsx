@@ -144,6 +144,68 @@ const translations: Record<Language, Record<string, string>> = {
     'error.unauthorized': 'Accesso non autorizzato.',
     'loading.generating': 'Generazione contenuto in corso...',
     'loading.general': 'Caricamento...',
+    
+    // USP Features - Hashtag Intelligence
+    'hashtag.title': 'Hashtag Intelligence',
+    'hashtag.description': 'Analizza la difficoltà competitiva e le opportunità di engagement per i tuoi hashtag',
+    'hashtag.input': 'Hashtag da analizzare',
+    'hashtag.separator': 'separati da virgola',
+    'hashtag.placeholder': 'es: marketing, socialmedia, business',
+    'hashtag.analyze': 'Analizza Hashtag',
+    'hashtag.analyzing': 'Analizzando...',
+    'hashtag.results': 'Risultati Analisi',
+    'hashtag.difficulty.low': 'Bassa',
+    'hashtag.difficulty.medium': 'Media',
+    'hashtag.difficulty.high': 'Alta',
+    'hashtag.opportunity': 'Opportunità',
+    'hashtag.volume': 'Volume',
+    'hashtag.error.empty': 'Inserisci almeno un hashtag da analizzare',
+    'hashtag.success': 'Analisi completata',
+    'hashtag.successDesc': 'Hashtag analizzati con successo',
+    
+    // USP Features - Holiday Presets
+    'holiday.title': 'Preset Festività Nazionali',
+    'holiday.description': 'Template ottimizzati per le principali festività e ricorrenze del tuo paese',
+    'holiday.suggestions': 'Suggerimenti Contenuto',
+    'holiday.hashtags': 'Hashtag Suggeriti',
+    'holiday.tones': 'Toni Consigliati',
+    'holiday.use': 'Usa Questo Preset',
+    'holiday.empty': 'Nessun preset disponibile per questa regione',
+    
+    // USP Features - SEO Analyzer
+    'seo.title': 'Snippet SEO',
+    'seo.description': 'Genera titoli e descrizioni ottimizzati per i motori di ricerca',
+    'seo.generate': 'Genera SEO',
+    'seo.generating': 'Generando...',
+    'seo.optimized': 'Snippet SEO Ottimizzati',
+    'seo.seoTitle': 'Titolo SEO',
+    'seo.metaDesc': 'Meta Description',
+    'seo.suggestedUrl': 'URL Suggerito',
+    'seo.success': 'SEO generato',
+    'seo.successDesc': 'Snippet SEO ottimizzati generati con successo',
+    'seo.error.empty': 'Contenuto richiesto per generare SEO',
+    
+    // USP Features - CTR Prediction
+    'ctr.title': 'Predizione CTR',
+    'ctr.description': 'Analizza le performance previste del tuo contenuto',
+    'ctr.predict': 'Predici Performance',
+    'ctr.analyzing': 'Analizzando...',
+    'ctr.predicted': 'CTR Previsto',
+    'ctr.engagement': 'Engagement Score',
+    'ctr.suggestions': 'Suggerimenti per Migliorare',
+    'ctr.analysis': 'Analisi Performance Prevista',
+    'ctr.success': 'Predizione completata',
+    'ctr.successDesc': 'Analisi performance generata con successo',
+    'ctr.error.empty': 'Contenuto richiesto per predire CTR',
+    
+    // Tools Page
+    'tools.title': 'Strumenti Avanzati',
+    'tools.subtitle': 'Funzionalità esclusive per ottimizzare i tuoi contenuti',
+    'tools.copied': 'Copiato!',
+    'tools.copiedDesc': 'Testo copiato negli appunti',
+    
+    // Navigation
+    'nav.tools': 'Strumenti',
   },
   
   en: {
@@ -276,6 +338,68 @@ const translations: Record<Language, Record<string, string>> = {
     'error.unauthorized': 'Unauthorized access.',
     'loading.generating': 'Generating content...',
     'loading.general': 'Loading...',
+    
+    // USP Features - Hashtag Intelligence
+    'hashtag.title': 'Hashtag Intelligence',
+    'hashtag.description': 'Analyze competitive difficulty and engagement opportunities for your hashtags',
+    'hashtag.input': 'Hashtags to analyze',
+    'hashtag.separator': 'separated by comma',
+    'hashtag.placeholder': 'e.g.: marketing, socialmedia, business',
+    'hashtag.analyze': 'Analyze Hashtags',
+    'hashtag.analyzing': 'Analyzing...',
+    'hashtag.results': 'Analysis Results',
+    'hashtag.difficulty.low': 'Low',
+    'hashtag.difficulty.medium': 'Medium',
+    'hashtag.difficulty.high': 'High',
+    'hashtag.opportunity': 'Opportunity',
+    'hashtag.volume': 'Volume',
+    'hashtag.error.empty': 'Enter at least one hashtag to analyze',
+    'hashtag.success': 'Analysis complete',
+    'hashtag.successDesc': 'Hashtags analyzed successfully',
+    
+    // USP Features - Holiday Presets
+    'holiday.title': 'National Holiday Presets',
+    'holiday.description': 'Optimized templates for major holidays and events in your country',
+    'holiday.suggestions': 'Content Suggestions',
+    'holiday.hashtags': 'Suggested Hashtags',
+    'holiday.tones': 'Recommended Tones',
+    'holiday.use': 'Use This Preset',
+    'holiday.empty': 'No presets available for this region',
+    
+    // USP Features - SEO Analyzer
+    'seo.title': 'SEO Snippets',
+    'seo.description': 'Generate optimized titles and descriptions for search engines',
+    'seo.generate': 'Generate SEO',
+    'seo.generating': 'Generating...',
+    'seo.optimized': 'Optimized SEO Snippets',
+    'seo.seoTitle': 'SEO Title',
+    'seo.metaDesc': 'Meta Description',
+    'seo.suggestedUrl': 'Suggested URL',
+    'seo.success': 'SEO generated',
+    'seo.successDesc': 'Optimized SEO snippets generated successfully',
+    'seo.error.empty': 'Content required to generate SEO',
+    
+    // USP Features - CTR Prediction
+    'ctr.title': 'CTR Prediction',
+    'ctr.description': 'Analyze expected performance of your content',
+    'ctr.predict': 'Predict Performance',
+    'ctr.analyzing': 'Analyzing...',
+    'ctr.predicted': 'Predicted CTR',
+    'ctr.engagement': 'Engagement Score',
+    'ctr.suggestions': 'Suggestions to Improve',
+    'ctr.analysis': 'Expected Performance Analysis',
+    'ctr.success': 'Prediction complete',
+    'ctr.successDesc': 'Performance analysis generated successfully',
+    'ctr.error.empty': 'Content required to predict CTR',
+    
+    // Tools Page
+    'tools.title': 'Advanced Tools',
+    'tools.subtitle': 'Exclusive features to optimize your content',
+    'tools.copied': 'Copied!',
+    'tools.copiedDesc': 'Text copied to clipboard',
+    
+    // Navigation
+    'nav.tools': 'Tools',
   },
   
   es: {
@@ -408,6 +532,68 @@ const translations: Record<Language, Record<string, string>> = {
     'error.unauthorized': 'Acceso no autorizado.',
     'loading.generating': 'Generando contenido...',
     'loading.general': 'Cargando...',
+    
+    // USP Features - Hashtag Intelligence
+    'hashtag.title': 'Hashtag Intelligence',
+    'hashtag.description': 'Analiza la dificultad competitiva y las oportunidades de engagement para tus hashtags',
+    'hashtag.input': 'Hashtags a analizar',
+    'hashtag.separator': 'separados por coma',
+    'hashtag.placeholder': 'ej: marketing, socialmedia, business',
+    'hashtag.analyze': 'Analizar Hashtags',
+    'hashtag.analyzing': 'Analizando...',
+    'hashtag.results': 'Resultados del Análisis',
+    'hashtag.difficulty.low': 'Baja',
+    'hashtag.difficulty.medium': 'Media',
+    'hashtag.difficulty.high': 'Alta',
+    'hashtag.opportunity': 'Oportunidad',
+    'hashtag.volume': 'Volumen',
+    'hashtag.error.empty': 'Ingresa al menos un hashtag para analizar',
+    'hashtag.success': 'Análisis completado',
+    'hashtag.successDesc': 'Hashtags analizados con éxito',
+    
+    // USP Features - Holiday Presets
+    'holiday.title': 'Plantillas de Festividades Nacionales',
+    'holiday.description': 'Plantillas optimizadas para las principales festividades de tu país',
+    'holiday.suggestions': 'Sugerencias de Contenido',
+    'holiday.hashtags': 'Hashtags Sugeridos',
+    'holiday.tones': 'Tonos Recomendados',
+    'holiday.use': 'Usar Esta Plantilla',
+    'holiday.empty': 'No hay plantillas disponibles para esta región',
+    
+    // USP Features - SEO Analyzer
+    'seo.title': 'Snippets SEO',
+    'seo.description': 'Genera títulos y descripciones optimizados para motores de búsqueda',
+    'seo.generate': 'Generar SEO',
+    'seo.generating': 'Generando...',
+    'seo.optimized': 'Snippets SEO Optimizados',
+    'seo.seoTitle': 'Título SEO',
+    'seo.metaDesc': 'Meta Description',
+    'seo.suggestedUrl': 'URL Sugerida',
+    'seo.success': 'SEO generado',
+    'seo.successDesc': 'Snippets SEO optimizados generados con éxito',
+    'seo.error.empty': 'Contenido requerido para generar SEO',
+    
+    // USP Features - CTR Prediction
+    'ctr.title': 'Predicción CTR',
+    'ctr.description': 'Analiza el rendimiento esperado de tu contenido',
+    'ctr.predict': 'Predecir Rendimiento',
+    'ctr.analyzing': 'Analizando...',
+    'ctr.predicted': 'CTR Previsto',
+    'ctr.engagement': 'Puntuación de Engagement',
+    'ctr.suggestions': 'Sugerencias para Mejorar',
+    'ctr.analysis': 'Análisis de Rendimiento Esperado',
+    'ctr.success': 'Predicción completada',
+    'ctr.successDesc': 'Análisis de rendimiento generado con éxito',
+    'ctr.error.empty': 'Contenido requerido para predecir CTR',
+    
+    // Tools Page
+    'tools.title': 'Herramientas Avanzadas',
+    'tools.subtitle': 'Funciones exclusivas para optimizar tu contenido',
+    'tools.copied': '¡Copiado!',
+    'tools.copiedDesc': 'Texto copiado al portapapeles',
+    
+    // Navigation
+    'nav.tools': 'Herramientas',
   }
 };
 
