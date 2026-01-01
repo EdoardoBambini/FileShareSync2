@@ -20,15 +20,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 export async function registerRoutes(app: Express): Promise<void> {
   // Using Clerk JWT authentication - no session setup needed
 
-  // Health check endpoint (no auth required)
-  app.get('/api/health', async (_req, res) => {
-    res.status(200).json({
-      status: 'healthy',
-      timestamp: new Date().toISOString(),
-      version: '1.0.0',
-    });
-  });
-
   // Stripe webhook endpoint - MUST use raw body for signature verification
   app.post('/api/webhooks/stripe', express.raw({ type: 'application/json' }), handleStripeWebhook);
 
@@ -40,7 +31,7 @@ export async function registerRoutes(app: Express): Promise<void> {
       const user = await storage.checkAndResetWeeklyCredits(userId);
       res.json(user);
     } catch (error) {
-      logger.error("Error fetching user:", error);
+      console.error("Error fetching user:", error);
       res.status(500).json({ message: "Failed to fetch user" });
     }
   });
@@ -68,7 +59,7 @@ export async function registerRoutes(app: Express): Promise<void> {
       if (error instanceof z.ZodError) {
         return res.status(400).json({ message: "Invalid input data" });
       }
-      logger.error("Error updating user:", error);
+      console.error("Error updating user:", error);
       res.status(500).json({ message: "Failed to update user" });
     }
   });
@@ -80,7 +71,7 @@ export async function registerRoutes(app: Express): Promise<void> {
       const profiles = await storage.getUserNicheProfiles(userId);
       res.json(profiles);
     } catch (error) {
-      logger.error("Error fetching niche profiles:", error);
+      console.error("Error fetching niche profiles:", error);
       res.status(500).json({ message: "Failed to fetch niche profiles" });
     }
   });
@@ -99,7 +90,7 @@ export async function registerRoutes(app: Express): Promise<void> {
       if (error instanceof z.ZodError) {
         return res.status(400).json({ message: "Invalid input data", errors: error.errors });
       }
-      logger.error("Error creating niche profile:", error);
+      console.error("Error creating niche profile:", error);
       res.status(500).json({ message: "Failed to create niche profile" });
     }
   });
@@ -120,7 +111,7 @@ export async function registerRoutes(app: Express): Promise<void> {
       
       res.json(profile);
     } catch (error) {
-      logger.error("Error fetching niche profile:", error);
+      console.error("Error fetching niche profile:", error);
       res.status(500).json({ message: "Failed to fetch niche profile" });
     }
   });
@@ -148,7 +139,7 @@ export async function registerRoutes(app: Express): Promise<void> {
       if (error instanceof z.ZodError) {
         return res.status(400).json({ message: "Invalid input data", errors: error.errors });
       }
-      logger.error("Error updating niche profile:", error);
+      console.error("Error updating niche profile:", error);
       res.status(500).json({ message: "Failed to update niche profile" });
     }
   });
@@ -161,7 +152,7 @@ export async function registerRoutes(app: Express): Promise<void> {
       await storage.deleteNicheProfile(id, userId);
       res.json({ message: "Niche profile deleted successfully" });
     } catch (error) {
-      logger.error("Error deleting niche profile:", error);
+      console.error("Error deleting niche profile:", error);
       res.status(500).json({ message: "Failed to delete niche profile" });
     }
   });
@@ -190,7 +181,7 @@ export async function registerRoutes(app: Express): Promise<void> {
       
       res.json(suggestions);
     } catch (error) {
-      logger.error("Error getting content suggestions:", error);
+      console.error("Error getting content suggestions:", error);
       res.status(500).json({ message: "Failed to get suggestions: " + (error as Error).message });
     }
   });
@@ -289,7 +280,7 @@ export async function registerRoutes(app: Express): Promise<void> {
       if (error instanceof z.ZodError) {
         return res.status(400).json({ message: "Invalid input data", errors: error.errors });
       }
-      logger.error("Error generating content:", error);
+      console.error("Error generating content:", error);
       res.status(500).json({ message: "Failed to generate content: " + (error as Error).message });
     }
   });
@@ -335,7 +326,7 @@ export async function registerRoutes(app: Express): Promise<void> {
       const savedContent = await storage.saveGeneratedContent(contentData);
       res.json(savedContent);
     } catch (error) {
-      logger.error("Error generating content variation:", error);
+      console.error("Error generating content variation:", error);
       res.status(500).json({ message: "Failed to generate content variation: " + (error as Error).message });
     }
   });
@@ -356,7 +347,7 @@ export async function registerRoutes(app: Express): Promise<void> {
       await storage.updateContentRating(id, rating);
       res.json({ message: "Rating updated successfully" });
     } catch (error) {
-      logger.error("Error updating content rating:", error);
+      console.error("Error updating content rating:", error);
       res.status(500).json({ message: "Failed to update rating" });
     }
   });
@@ -368,7 +359,7 @@ export async function registerRoutes(app: Express): Promise<void> {
       const content = await storage.getUserGeneratedContent(userId);
       res.json(content);
     } catch (error) {
-      logger.error("Error fetching generated content:", error);
+      console.error("Error fetching generated content:", error);
       res.status(500).json({ message: "Failed to fetch generated content" });
     }
   });
@@ -428,7 +419,7 @@ export async function registerRoutes(app: Express): Promise<void> {
         status: 'requires_payment'
       });
     } catch (error: any) {
-      logger.error("Error creating subscription:", error);
+      console.error("Error creating subscription:", error);
       res.status(500).json({ message: "Errore nella creazione dell'abbonamento: " + error.message });
     }
   });
@@ -456,7 +447,7 @@ export async function registerRoutes(app: Express): Promise<void> {
             await storage.updateUserSubscription(userId, subscriptionStatus);
           }
         } catch (error) {
-          logger.error("Error checking Stripe subscription:", error);
+          console.error("Error checking Stripe subscription:", error);
         }
       }
 
@@ -466,7 +457,7 @@ export async function registerRoutes(app: Express): Promise<void> {
         isUpgradeRequired: subscriptionStatus === 'free' && creditsRemaining <= 0,
       });
     } catch (error: any) {
-      logger.error("Error checking subscription status:", error);
+      console.error("Error checking subscription status:", error);
       res.status(500).json({ message: "Errore nel controllo dell'abbonamento: " + error.message });
     }
   });
@@ -492,7 +483,7 @@ export async function registerRoutes(app: Express): Promise<void> {
         res.status(400).json({ message: "Pagamento non completato" });
       }
     } catch (error: any) {
-      logger.error("Error confirming payment:", error);
+      console.error("Error confirming payment:", error);
       res.status(500).json({ message: "Errore nella conferma del pagamento: " + error.message });
     }
   });
@@ -510,7 +501,7 @@ export async function registerRoutes(app: Express): Promise<void> {
       await storage.updateUserSubscription(userId, 'free');
       res.json({ message: "Abbonamento cancellato con successo" });
     } catch (error: any) {
-      logger.error("Error canceling subscription:", error);
+      console.error("Error canceling subscription:", error);
       res.status(500).json({ message: "Errore nella cancellazione dell'abbonamento: " + error.message });
     }
   });
@@ -532,7 +523,7 @@ export async function registerRoutes(app: Express): Promise<void> {
       if (error instanceof z.ZodError) {
         return res.status(400).json({ message: "Invalid input data" });
       }
-      logger.error("Error analyzing hashtags:", error);
+      console.error("Error analyzing hashtags:", error);
       res.status(500).json({ message: "Error analyzing hashtags" });
     }
   });
@@ -559,7 +550,7 @@ export async function registerRoutes(app: Express): Promise<void> {
       if (error instanceof z.ZodError) {
         return res.status(400).json({ message: "Invalid input data" });
       }
-      logger.error("Error generating SEO snippets:", error);
+      console.error("Error generating SEO snippets:", error);
       res.status(500).json({ message: "Error generating SEO" });
     }
   });
@@ -579,7 +570,7 @@ export async function registerRoutes(app: Express): Promise<void> {
       if (error instanceof z.ZodError) {
         return res.status(400).json({ message: "Invalid input data" });
       }
-      logger.error("Error predicting CTR:", error);
+      console.error("Error predicting CTR:", error);
       res.status(500).json({ message: "Error predicting CTR" });
     }
   });
@@ -591,7 +582,7 @@ export async function registerRoutes(app: Express): Promise<void> {
       const presets = getHolidayPresets(country as string, language as string);
       res.json({ presets });
     } catch (error: any) {
-      logger.error("Error getting holiday presets:", error);
+      console.error("Error getting holiday presets:", error);
       res.status(500).json({ message: "Errore durante il caricamento dei preset: " + error.message });
     }
   });

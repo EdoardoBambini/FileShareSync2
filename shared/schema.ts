@@ -25,7 +25,6 @@ export const sessions = pgTable(
 );
 
 // User storage table.
-// (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
 export const users = pgTable("users", {
   id: varchar("id").primaryKey().notNull(),
   email: varchar("email").unique(),
@@ -34,13 +33,16 @@ export const users = pgTable("users", {
   profileImageUrl: varchar("profile_image_url"),
   company: varchar("company"),
   subscriptionPlan: varchar("subscription_plan").default("free"), // free, premium
-  creditsRemaining: integer("credits_remaining").default(3), // crediti per utenti free
-  lastCreditsReset: timestamp("last_credits_reset").defaultNow(), // ultimo reset crediti
+  creditsRemaining: integer("credits_remaining").default(3), // credits for free users
+  lastCreditsReset: timestamp("last_credits_reset").defaultNow(), // last credit reset
   stripeCustomerId: varchar("stripe_customer_id"),
   stripeSubscriptionId: varchar("stripe_subscription_id"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
-});
+}, (table) => [
+  index("idx_users_stripe_customer_id").on(table.stripeCustomerId),
+  index("idx_users_subscription_plan").on(table.subscriptionPlan),
+]);
 
 // Niche profiles table
 export const nicheProfiles = pgTable("niche_profiles", {
@@ -53,7 +55,10 @@ export const nicheProfiles = pgTable("niche_profiles", {
   keywords: text("keywords"), // comma-separated
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
-});
+}, (table) => [
+  index("idx_niche_profiles_user_id").on(table.userId),
+  index("idx_niche_profiles_created_at").on(table.createdAt),
+]);
 
 // Generated content table
 export const generatedContent = pgTable("generated_content", {
@@ -65,7 +70,11 @@ export const generatedContent = pgTable("generated_content", {
   generatedText: text("generated_text").notNull(),
   rating: integer("rating"), // user feedback 1-5 or thumbs up/down
   createdAt: timestamp("created_at").defaultNow(),
-});
+}, (table) => [
+  index("idx_generated_content_user_id").on(table.userId),
+  index("idx_generated_content_niche_profile_id").on(table.nicheProfileId),
+  index("idx_generated_content_created_at").on(table.createdAt),
+]);
 
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
