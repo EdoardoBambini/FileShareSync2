@@ -16,8 +16,8 @@ import { eq, desc, and, sql } from "drizzle-orm";
 // Interface for storage operations
 export interface IStorage {
   // User operations
-  // (IMPORTANT) these user operations are mandatory for Replit Auth.
   getUser(id: string): Promise<User | undefined>;
+  getUserByStripeCustomerId(stripeCustomerId: string): Promise<User | undefined>;
   upsertUser(user: UpsertUser): Promise<User>;
   decreaseUserCredits(userId: string): Promise<void>;
   checkAndResetWeeklyCredits(userId: string): Promise<User>;
@@ -39,10 +39,14 @@ export interface IStorage {
 
 export class DatabaseStorage implements IStorage {
   // User operations
-  // (IMPORTANT) these user operations are mandatory for Replit Auth.
 
   async getUser(id: string): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user;
+  }
+
+  async getUserByStripeCustomerId(stripeCustomerId: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.stripeCustomerId, stripeCustomerId));
     return user;
   }
 
@@ -137,13 +141,19 @@ export class DatabaseStorage implements IStorage {
   }
 
   async decreaseUserCredits(userId: string): Promise<void> {
+    // Atomic decrement with check to prevent going below 0
     await db
       .update(users)
-      .set({ 
-        creditsRemaining: sql`${users.creditsRemaining} - 1`,
-        updatedAt: new Date() 
+      .set({
+        creditsRemaining: sql`GREATEST(${users.creditsRemaining} - 1, 0)`,
+        updatedAt: new Date()
       })
-      .where(eq(users.id, userId));
+      .where(
+        and(
+          eq(users.id, userId),
+          sql`${users.creditsRemaining} > 0`
+        )
+      );
   }
 
   async checkAndResetWeeklyCredits(userId: string): Promise<User> {
