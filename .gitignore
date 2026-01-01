@@ -8,3 +8,6 @@ vite.config.ts.*
 .env.local
 .env.*.local
 .vercel
+# Local state
+.local/
+.replit/
